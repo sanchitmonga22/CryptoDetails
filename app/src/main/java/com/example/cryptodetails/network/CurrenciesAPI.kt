@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface CurrenciesAPI {
-    @GET("/currencies")
+    // https://api.kucoin.com/api/v1/currencies
+    @GET("api/v1/currencies")
     suspend fun getCurrencies(): Response<DataFromAPI>
 }

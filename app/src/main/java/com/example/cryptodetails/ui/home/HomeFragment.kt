@@ -2,6 +2,7 @@ package com.example.cryptodetails.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,12 @@ class HomeFragment : Fragment() {
             val navController =
                 (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
             navController.navigate(R.id.navigation_my_account)
+        }
+
+        homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
+            data.forEach {
+                Log.d("currencyData", it.fullName)
+            }
         }
         return root
     }
