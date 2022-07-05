@@ -13,14 +13,16 @@ import java.util.*
 
 class CurrencyListAdapter(
     context: Context,
-    resource: Int,
-    textViewResourceId: Int,
     objects: List<Currency>
-) : ArrayAdapter<Currency>(context, resource, textViewResourceId, objects) {
+) : ArrayAdapter<Currency>(context, 0, objects) {
 
+    // TODO create a global instance of the array list
+    val currencyObjects = ArrayList(objects)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var rootView = convertView
         if (rootView == null) {
+            // TODO use view binding here
+            //  also need to create a binding adapter
 //            convertView =
 //                ListItemsSearchBarBinding.inflate(LayoutInflater.from(context), parent, false).root
             rootView =
@@ -41,10 +43,10 @@ class CurrencyListAdapter(
             val results = FilterResults()
             val suggestions = ArrayList<Currency>()
             if (constraint == null || constraint.isEmpty()) {
-                suggestions.addAll(objects)
+                suggestions.addAll(currencyObjects)
             } else {
                 val searchQuery = constraint.toString().lowercase(Locale.ROOT).trim()
-                objects.forEach {
+                currencyObjects.forEach {
                     if (it.name.lowercase(Locale.ROOT).trim()
                             .contains(searchQuery) || it.fullName.lowercase(Locale.ROOT).trim()
                             .contains(searchQuery)

@@ -2,7 +2,6 @@ package com.example.cryptodetails.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,16 +40,10 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
-            val currencyAdapter = CurrencyListAdapter(
-                requireContext(),
-                0,
-                androidx.appcompat.R.layout.select_dialog_item_material,
-                data
-            )
+            val currencyAdapter = CurrencyListAdapter(requireContext(), data)
 
             binding.searchBar.setAdapter(currencyAdapter)
-            binding.searchBar.setOnItemClickListener { parent, view, position, id ->
-                Log.d("posiiton is", position.toString())
+            binding.searchBar.setOnItemClickListener { parent, _, position, _ ->
                 binding.codeValue.text = (parent.adapter.getItem(position) as Currency).name
                 binding.nameValue.text = (parent.adapter.getItem(position) as Currency).fullName
             }
