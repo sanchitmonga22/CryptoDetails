@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.cryptodetails.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_my_account"
+        android:name="com.example.cryptodetails.ui.myAccount.MyAccountFragment"
+        android:label="@string/title_my_account"
+        tools:layout="@layout/fragment_my_account" />
 
     <fragment
         android:id="@+id/navigation_notifications"
