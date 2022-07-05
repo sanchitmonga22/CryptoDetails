@@ -21,6 +21,15 @@ class HomeViewModel : ViewModel() {
         return currenciesLiveData
     }
 
+    fun filterQueriesGeneratorHelper(currencyData: ArrayList<Currency>): ArrayList<String> {
+        val currenciesSearchQueries = ArrayList<String>()
+        currencyData.forEach {
+            currenciesSearchQueries.add(it.name)
+            currenciesSearchQueries.add(it.fullName)
+        }
+        return currenciesSearchQueries
+    }
+
     init {
         currenciesLiveData = Repository.getCurrencies()
     }

@@ -2,17 +2,16 @@ package com.example.cryptodetails.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
-
 
 class HomeFragment : Fragment() {
 
@@ -46,10 +45,15 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
-            data.forEach {
-                Log.d("currencyData", it.fullName)
-            }
+            binding.searchBar.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    androidx.appcompat.R.layout.select_dialog_item_material,
+                    homeViewModel.filterQueriesGeneratorHelper(data)
+                )
+            )
         }
+
         return root
     }
 

@@ -29,5 +29,44 @@
                 android:paddingEnd="0dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="20dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:hint="@string/code" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="@color/cardview_dark_background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:hint="@string/name" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="@color/cardview_dark_background" />
+        </LinearLayout>
+
+
     </LinearLayout>
 </layout>
