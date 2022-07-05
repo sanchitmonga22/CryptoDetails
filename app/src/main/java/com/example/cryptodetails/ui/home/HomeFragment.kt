@@ -2,17 +2,16 @@ package com.example.cryptodetails.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
-import com.google.android.material.textview.MaterialTextView
+import com.example.cryptodetails.model.Currency
 
 class HomeFragment : Fragment() {
 
@@ -33,11 +32,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.searchBar
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        binding.viewModel = homeViewModel
 
         binding.outlinedTextField.setEndIconOnClickListener {
             val navController =
@@ -46,20 +41,18 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
-            binding.searchBar.setAdapter(
-                ArrayAdapter(
-                    requireContext(),
-                    androidx.appcompat.R.layout.select_dialog_item_material,
-                    homeViewModel.filterQueriesGeneratorHelper(data)
-                )
+            val currencyAdapter = CurrencyListAdapter(
+                requireContext(),
+                0,
+                androidx.appcompat.R.layout.select_dialog_item_material,
+                data
             )
-            
+
+            binding.searchBar.setAdapter(currencyAdapter)
             binding.searchBar.setOnItemClickListener { parent, view, position, id ->
-                val selectedSearchQuery = (view as MaterialTextView).text.toString()
-                binding.codeValue.text =
-                    homeViewModel.getCodeValueFromSearchQuery(selectedSearchQuery)
-                binding.nameValue.text =
-                    homeViewModel.getNameValueFromSearchQuery(selectedSearchQuery)
+                Log.d("posiiton is", position.toString())
+                binding.codeValue.text = (parent.adapter.getItem(position) as Currency).name
+                binding.nameValue.text = (parent.adapter.getItem(position) as Currency).fullName
             }
         }
 

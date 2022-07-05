@@ -12,7 +12,17 @@ class HomeViewModel : ViewModel() {
         value = ""
     }
 
-    val text: LiveData<String> = _searchText
+    private val _codeName = MutableLiveData<String>().apply {
+        value = ""
+    }
+
+    private val _fullName = MutableLiveData<String>().apply {
+        value = ""
+    }
+
+    val codeName: LiveData<String> = _codeName
+    val fullName: LiveData<String> = _fullName
+    val searchText: LiveData<String> = _searchText
 
     private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
 
@@ -32,7 +42,7 @@ class HomeViewModel : ViewModel() {
     private fun getSelectedSearchQueryCurrencyHelper(searchWord: String): Currency? {
         var searchedCurrency: Currency? = null
         currenciesLiveData.value?.forEach {
-            if (searchWord.equals(it.fullName) || searchWord.equals(it.name)) {
+            if (searchWord == it.fullName || searchWord == it.name) {
                 searchedCurrency = it
                 return@forEach
             }
