@@ -21,6 +21,33 @@ class HomeViewModel : ViewModel() {
         return currenciesLiveData
     }
 
+    fun getCodeValueFromSearchQuery(searchWord: String): String {
+        var returnValue = ""
+        getSelectedSearchQueryCurrencyHelper(searchWord)?.let {
+            returnValue = it.name
+        }
+        return returnValue
+    }
+
+    private fun getSelectedSearchQueryCurrencyHelper(searchWord: String): Currency? {
+        var searchedCurrency: Currency? = null
+        currenciesLiveData.value?.forEach {
+            if (searchWord.equals(it.fullName) || searchWord.equals(it.name)) {
+                searchedCurrency = it
+                return@forEach
+            }
+        }
+        return searchedCurrency
+    }
+
+    fun getNameValueFromSearchQuery(searchWord: String): String {
+        var returnValue = ""
+        getSelectedSearchQueryCurrencyHelper(searchWord)?.let {
+            returnValue = it.fullName
+        }
+        return returnValue
+    }
+
     fun filterQueriesGeneratorHelper(currencyData: ArrayList<Currency>): ArrayList<String> {
         val currenciesSearchQueries = ArrayList<String>()
         currencyData.forEach {

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
+import com.google.android.material.textview.MaterialTextView
 
 class HomeFragment : Fragment() {
 
@@ -52,6 +53,14 @@ class HomeFragment : Fragment() {
                     homeViewModel.filterQueriesGeneratorHelper(data)
                 )
             )
+            
+            binding.searchBar.setOnItemClickListener { parent, view, position, id ->
+                val selectedSearchQuery = (view as MaterialTextView).text.toString()
+                binding.codeValue.text =
+                    homeViewModel.getCodeValueFromSearchQuery(selectedSearchQuery)
+                binding.nameValue.text =
+                    homeViewModel.getNameValueFromSearchQuery(selectedSearchQuery)
+            }
         }
 
         return root
