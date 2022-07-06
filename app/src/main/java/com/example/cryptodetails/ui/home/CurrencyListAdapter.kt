@@ -11,13 +11,12 @@ import com.example.cryptodetails.R
 import com.example.cryptodetails.model.Currency
 import java.util.*
 
-class CurrencyListAdapter(
-    context: Context,
-    objects: List<Currency>
-) : ArrayAdapter<Currency>(context, 0, objects) {
+class CurrencyListAdapter(context: Context, objects: List<Currency>) :
+    ArrayAdapter<Currency>(context, 0, objects) {
 
     // TODO create a global instance of the array list
     val currencyObjects = ArrayList(objects)
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var rootView = convertView
         if (rootView == null) {

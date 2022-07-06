@@ -8,21 +8,11 @@ import com.example.cryptodetails.model.Currency
 
 class HomeViewModel : ViewModel() {
 
-    private val _searchText = MutableLiveData<String>().apply {
-        value = ""
-    }
+    var searchText: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
-    private val _codeName = MutableLiveData<String>().apply {
-        value = ""
-    }
+    var codeName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
-    private val _fullName = MutableLiveData<String>().apply {
-        value = ""
-    }
-
-    val codeName: LiveData<String> = _codeName
-    val fullName: LiveData<String> = _fullName
-    val searchText: LiveData<String> = _searchText
+    var fullName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
     private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
 
@@ -57,15 +47,15 @@ class HomeViewModel : ViewModel() {
 //        }
 //        return returnValue
 //    }
-
-    fun filterQueriesGeneratorHelper(currencyData: ArrayList<Currency>): ArrayList<String> {
-        val currenciesSearchQueries = ArrayList<String>()
-        currencyData.forEach {
-            currenciesSearchQueries.add(it.name)
-            currenciesSearchQueries.add(it.fullName)
-        }
-        return currenciesSearchQueries
-    }
+//
+//    fun filterQueriesGeneratorHelper(currencyData: ArrayList<Currency>): ArrayList<String> {
+//        val currenciesSearchQueries = ArrayList<String>()
+//        currencyData.forEach {
+//            currenciesSearchQueries.add(it.name)
+//            currenciesSearchQueries.add(it.fullName)
+//        }
+//        return currenciesSearchQueries
+//    }
 
     init {
         currenciesLiveData = Repository.getCurrencies()

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -29,7 +30,7 @@ class HomeFragment : Fragment() {
         val homeViewModel =
             ViewModelProvider(this)[HomeViewModel::class.java]
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val root: View = binding.root
         binding.viewModel = homeViewModel
 
@@ -41,14 +42,12 @@ class HomeFragment : Fragment() {
 
         homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
             val currencyAdapter = CurrencyListAdapter(requireContext(), data)
-
             binding.searchBar.setAdapter(currencyAdapter)
             binding.searchBar.setOnItemClickListener { parent, _, position, _ ->
-                binding.codeValue.text = (parent.adapter.getItem(position) as Currency).name
-                binding.nameValue.text = (parent.adapter.getItem(position) as Currency).fullName
+                binding.codeName.text = (parent.adapter.getItem(position) as Currency).name
+                binding.fullName.text = (parent.adapter.getItem(position) as Currency).fullName
             }
         }
-
         return root
     }
 
