@@ -6,31 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
-import android.widget.TextView
-import com.example.cryptodetails.R
+import com.example.cryptodetails.databinding.ListItemsSearchBarBinding
 import com.example.cryptodetails.model.Currency
 import java.util.*
 
 class CurrencyListAdapter(context: Context, objects: List<Currency>) :
     ArrayAdapter<Currency>(context, 0, objects) {
 
-    // TODO create a global instance of the array list
     val currencyObjects = ArrayList(objects)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var rootView = convertView
+        val binding: ListItemsSearchBarBinding?
         if (rootView == null) {
-            // TODO use view binding here
-            //  also need to create a binding adapter
-//            convertView =
-//                ListItemsSearchBarBinding.inflate(LayoutInflater.from(context), parent, false).root
-            rootView =
-                LayoutInflater.from(context).inflate(R.layout.list_items_search_bar, parent, false)
+            binding = ListItemsSearchBarBinding.inflate(LayoutInflater.from(context))
+            rootView = binding.root
+        } else {
+            binding = ListItemsSearchBarBinding.bind(rootView)
         }
         val currentSelectedCurrency = getItem(position)
-        rootView?.findViewById<TextView>(R.id.text1)?.text = currentSelectedCurrency?.name
-        rootView?.findViewById<TextView>(R.id.text2)?.text = currentSelectedCurrency?.fullName
-        return rootView!!
+        binding.text1.text = currentSelectedCurrency?.name
+        binding.text2.text = currentSelectedCurrency?.fullName
+        return rootView
     }
 
     override fun getFilter(): Filter {

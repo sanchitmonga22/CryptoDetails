@@ -27,11 +27,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
+        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        val root: View = binding.root
         binding.viewModel = homeViewModel
 
         binding.outlinedTextField.setEndIconOnClickListener {
@@ -48,7 +46,7 @@ class HomeFragment : Fragment() {
                 binding.fullName.text = (parent.adapter.getItem(position) as Currency).fullName
             }
         }
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
