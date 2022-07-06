@@ -1,5 +1,6 @@
 package com.example.cryptodetails.ui.home
 
+import android.widget.AdapterView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,46 +17,17 @@ class HomeViewModel : ViewModel() {
 
     private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
 
-    // To get the list of quotes.
     fun getCurrenciesRepository(): LiveData<ArrayList<Currency>> {
         return currenciesLiveData
     }
 
-//    fun getCodeValueFromSearchQuery(searchWord: String): String {
-//        var returnValue = ""
-//        getSelectedSearchQueryCurrencyHelper(searchWord)?.let {
-//            returnValue = it.name
-//        }
-//        return returnValue
-//    }
-
-//    private fun getSelectedSearchQueryCurrencyHelper(searchWord: String): Currency? {
-//        var searchedCurrency: Currency? = null
-//        currenciesLiveData.value?.forEach {
-//            if (searchWord == it.fullName || searchWord == it.name) {
-//                searchedCurrency = it
-//                return@forEach
-//            }
-//        }
-//        return searchedCurrency
-//    }
-
-//    fun getNameValueFromSearchQuery(searchWord: String): String {
-//        var returnValue = ""
-//        getSelectedSearchQueryCurrencyHelper(searchWord)?.let {
-//            returnValue = it.fullName
-//        }
-//        return returnValue
-//    }
-//
-//    fun filterQueriesGeneratorHelper(currencyData: ArrayList<Currency>): ArrayList<String> {
-//        val currenciesSearchQueries = ArrayList<String>()
-//        currencyData.forEach {
-//            currenciesSearchQueries.add(it.name)
-//            currenciesSearchQueries.add(it.fullName)
-//        }
-//        return currenciesSearchQueries
-//    }
+    val searchItemClickListener =
+        AdapterView.OnItemClickListener { parent, view, position, id ->
+            this@HomeViewModel.codeName.value =
+                (parent?.adapter?.getItem(position) as Currency).name
+            this@HomeViewModel.fullName.value =
+                (parent.adapter?.getItem(position) as Currency).fullName
+        }
 
     init {
         currenciesLiveData = Repository.getCurrencies()
