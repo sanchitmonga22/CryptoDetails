@@ -1,7 +1,6 @@
 package com.example.cryptodetails.ui.home
 
 import android.widget.AdapterView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cryptodetails.data.Repository
@@ -17,12 +16,12 @@ class HomeViewModel : ViewModel() {
 
     private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
 
-    fun getCurrenciesRepository(): LiveData<ArrayList<Currency>> {
+    fun getCurrenciesData(): MutableLiveData<ArrayList<Currency>> {
         return currenciesLiveData
     }
 
     val searchItemClickListener =
-        AdapterView.OnItemClickListener { parent, view, position, id ->
+        AdapterView.OnItemClickListener { parent, _, position, _ ->
             this@HomeViewModel.codeName.value =
                 (parent?.adapter?.getItem(position) as Currency).name
             this@HomeViewModel.fullName.value =
@@ -30,6 +29,6 @@ class HomeViewModel : ViewModel() {
         }
 
     init {
-        currenciesLiveData = Repository.getCurrencies()
+        Repository.getCurrencies(getCurrenciesData())
     }
 }

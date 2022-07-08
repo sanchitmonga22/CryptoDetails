@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -40,9 +41,18 @@ class HomeFragment : Fragment() {
         }
 
         // will set the adapter after the data has been loaded
-        homeViewModel.getCurrenciesRepository().observe(viewLifecycleOwner) { data ->
-            binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), data))
+        homeViewModel.getCurrenciesData().observe(viewLifecycleOwner) { data ->
+            if (data == null) {
+                Toast.makeText(
+                    context,
+                    "An ERROR occurred, please check the network connection and try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), data))
+            }
         }
+
         return binding.root
     }
 
