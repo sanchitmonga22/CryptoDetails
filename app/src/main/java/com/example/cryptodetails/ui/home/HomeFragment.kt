@@ -9,11 +9,14 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
+import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : Fragment() {
+    // TODO: setup navigation through VM
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -40,19 +43,31 @@ class HomeFragment : Fragment() {
             navController.navigate(R.id.navigation_my_account)
         }
 
-        // will set the adapter after the data has been loaded
-        homeViewModel.getCurrenciesData().observe(viewLifecycleOwner) { data ->
-            if (data == null) {
-                Toast.makeText(
-                    context,
-                    "An ERROR occurred, please check the network connection and try again later",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), data))
+//        lifecycleScope.launchWhenCreated {
+//            homeViewModel.triggerCurrencyFlow().collectLatest {
+//                // set adapter with the new data
+//            }
+//        }
+//        lifecycleScope.launchWhenCreated {
+//            homeViewModel.currencySharedFlow.collectLatest {
+//                // set ada[ter with the new data
+//                // will have the latest data here
+//            }
+//        }
+
+        lifecycleScope.launchWhenCreated {
+            homeViewModel.currencyStateFlow.collectLatest {
+                if (it == null) {
+                    Toast.makeText(
+                        context,
+                        "An ERROR occurred, please check the network connection and try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), it))
+                }
             }
         }
-
         return binding.root
     }
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cryptodetails.data.Repository
 import com.example.cryptodetails.model.Currency
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
 
@@ -14,11 +16,8 @@ class HomeViewModel : ViewModel() {
 
     var fullName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
-    private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
-
-    fun getCurrenciesData(): MutableLiveData<ArrayList<Currency>> {
-        return currenciesLiveData
-    }
+    private var _currencyStateFlow = MutableStateFlow<ArrayList<Currency>?>(ArrayList())
+    val currencyStateFlow = _currencyStateFlow.asStateFlow()
 
     val searchItemClickListener =
         AdapterView.OnItemClickListener { parent, _, position, _ ->
@@ -28,7 +27,20 @@ class HomeViewModel : ViewModel() {
                 (parent.adapter?.getItem(position) as Currency).fullName
         }
 
+//    private val _currencySharedFlow = MutableSharedFlow<ArrayList<Currency>>()
+//    val currencySharedFlow = _currencySharedFlow.asSharedFlow()
+
+//    fun triggerSharedFlow() {
+//        viewModelScope.launch {
+////            _currencySharedFlow.emit()
+//        }
+//    }
+
+//    fun triggerCurrencyFlow(): Flow<ArrayList<Currency>?> = flow {
+//        emit()
+//    }
+
     init {
-        Repository.getCurrencies(getCurrenciesData())
+        Repository.getCurrencies(_currencyStateFlow)
     }
 }

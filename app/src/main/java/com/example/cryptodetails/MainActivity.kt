@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// exception handling for network
-// bug fix
+// bug fix for navigation between tabs
+//
 // use kotlin flows
 
 //        // Add your own reselected listener
