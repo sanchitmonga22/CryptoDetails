@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
 
         binding.outlinedTextField.setEndIconOnClickListener {
-            // FIXME: not able to navigate back to home by tapping on home in the tab options after tapping on profile icon.
             navigateToMyAccount()
         }
 
@@ -61,6 +60,7 @@ class HomeFragment : Fragment() {
             (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
 //        navController.backQueue
 //        navController.graph.findNode(R.id.navigation_my_account)
+        // FIXME: the state of R.id.navigation_home not being preserved when navigating back
         navController.popBackStack(R.id.navigation_home, true)
         navController.navigate(R.id.navigation_my_account)
     }
