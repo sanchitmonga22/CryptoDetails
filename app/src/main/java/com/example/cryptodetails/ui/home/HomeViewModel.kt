@@ -14,11 +14,7 @@ class HomeViewModel : ViewModel() {
 
     var fullName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
 
-    private var currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
-
-    fun getCurrenciesData(): MutableLiveData<ArrayList<Currency>> {
-        return currenciesLiveData
-    }
+    val currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
 
     val searchItemClickListener =
         AdapterView.OnItemClickListener { parent, _, position, _ ->
@@ -28,7 +24,7 @@ class HomeViewModel : ViewModel() {
                 (parent.adapter?.getItem(position) as Currency).fullName
         }
 
-    init {
-        Repository.getCurrencies(getCurrenciesData())
+    fun makeAPICall() {
+        Repository.getCurrencies(currenciesLiveData)
     }
 }

@@ -14,7 +14,7 @@ object Utility {
 
     private fun isNetworkConnected(): Boolean {
         var result = false
-        val connectivityManager = AppProvider.context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = ContextHolder.context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val actNw =
                 connectivityManager.getNetworkCapabilities(

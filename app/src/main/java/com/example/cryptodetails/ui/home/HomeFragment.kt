@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
+import com.example.cryptodetails.ui.adapters.CurrencyListAdapter
 
 class HomeFragment : Fragment() {
 
@@ -40,8 +41,9 @@ class HomeFragment : Fragment() {
             navController.navigate(R.id.navigation_my_account)
         }
 
+        homeViewModel.makeAPICall()
         // will set the adapter after the data has been loaded
-        homeViewModel.getCurrenciesData().observe(viewLifecycleOwner) { data ->
+        homeViewModel.currenciesLiveData.observe(viewLifecycleOwner) { data ->
             if (data == null) {
                 Toast.makeText(
                     context,
