@@ -17,9 +17,6 @@ import com.example.cryptodetails.ui.adapters.CurrencyListAdapter
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
@@ -36,11 +33,14 @@ class HomeFragment : Fragment() {
 
         binding.outlinedTextField.setEndIconOnClickListener {
             // FIXME: not able to navigate back to home by tapping on home in the tab options after tapping on profile icon.
-            val navController =
-                (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
-            navController.navigate(R.id.navigation_my_account)
+            navigateToMyAccount()
         }
 
+        setupVM(homeViewModel)
+        return binding.root
+    }
+
+    private fun setupVM(homeViewModel: HomeViewModel) {
         homeViewModel.makeAPICall()
         // will set the adapter after the data has been loaded
         homeViewModel.currenciesLiveData.observe(viewLifecycleOwner) { data ->
@@ -54,8 +54,15 @@ class HomeFragment : Fragment() {
                 binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), data))
             }
         }
+    }
 
-        return binding.root
+    private fun navigateToMyAccount() {
+        val navController =
+            (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
+//        navController.backQueue
+//        navController.graph.findNode(R.id.navigation_my_account)
+        navController.popBackStack(R.id.navigation_home, true)
+        navController.navigate(R.id.navigation_my_account)
     }
 
     override fun onDestroyView() {
