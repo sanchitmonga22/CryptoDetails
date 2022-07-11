@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.home
+package com.example.cryptodetails.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -38,7 +38,7 @@ class CurrencyListAdapter(context: Context, objects: List<Currency>) :
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val results = FilterResults()
             val suggestions = ArrayList<Currency>()
-            if (constraint == null || constraint.isEmpty()) {
+            if (constraint == null || constraint.isEmpty() || constraint.length < 2) {
                 suggestions.addAll(currencyObjects)
             } else {
                 val searchQuery = constraint.toString().lowercase(Locale.ROOT).trim()

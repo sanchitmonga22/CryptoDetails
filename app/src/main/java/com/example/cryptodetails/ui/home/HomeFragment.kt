@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentHomeBinding
+import com.example.cryptodetails.ui.adapters.CurrencyListAdapter
 import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : Fragment() {
@@ -37,24 +38,16 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
 
         binding.outlinedTextField.setEndIconOnClickListener {
-            // FIXME: not able to navigate back to home by tapping on home in the tab options after tapping on profile icon.
-            val navController =
-                (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
-            navController.navigate(R.id.navigation_my_account)
+            navigateToMyAccount()
         }
 
-//        lifecycleScope.launchWhenCreated {
-//            homeViewModel.triggerCurrencyFlow().collectLatest {
-//                // set adapter with the new data
-//            }
-//        }
-//        lifecycleScope.launchWhenCreated {
-//            homeViewModel.currencySharedFlow.collectLatest {
-//                // set ada[ter with the new data
-//                // will have the latest data here
-//            }
-//        }
+        setupVM(homeViewModel)
+        return binding.root
+    }
 
+    private fun setupVM(homeViewModel: HomeViewModel) {
+        homeViewModel.makeAPICall()
+        // will set the adapter after the data has been loaded
         lifecycleScope.launchWhenCreated {
             homeViewModel.currencyStateFlow.collectLatest {
                 if (it == null) {
@@ -68,7 +61,16 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        return binding.root
+    }
+
+    private fun navigateToMyAccount() {
+        val navController =
+            (requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
+//        navController.backQueue
+//        navController.graph.findNode(R.id.navigation_my_account)
+        // FIXME: the state of R.id.navigation_home not being preserved when navigating back
+        navController.popBackStack(R.id.navigation_home, true)
+        navController.navigate(R.id.navigation_my_account)
     }
 
     override fun onDestroyView() {

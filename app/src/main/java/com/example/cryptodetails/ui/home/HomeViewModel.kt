@@ -27,20 +27,7 @@ class HomeViewModel : ViewModel() {
                 (parent.adapter?.getItem(position) as Currency).fullName
         }
 
-//    private val _currencySharedFlow = MutableSharedFlow<ArrayList<Currency>>()
-//    val currencySharedFlow = _currencySharedFlow.asSharedFlow()
-
-//    fun triggerSharedFlow() {
-//        viewModelScope.launch {
-////            _currencySharedFlow.emit()
-//        }
-//    }
-
-//    fun triggerCurrencyFlow(): Flow<ArrayList<Currency>?> = flow {
-//        emit()
-//    }
-
-    init {
+    fun makeAPICall() {
         Repository.getCurrencies(_currencyStateFlow)
     }
 }
