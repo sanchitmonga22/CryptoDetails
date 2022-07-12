@@ -1,11 +1,14 @@
 package com.example.cryptodetails
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
 import com.example.cryptodetails.util.ContextHolder
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ContextHolder.app = application
         ContextHolder.context = baseContext
+
+        registerReceiver(NetworkStatusChangeReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(NetworkStatusChangeReceiver())
     }
 }
 
