@@ -23,3 +23,17 @@ class NetworkStatusChangeReceiver : BroadcastReceiver() {
         }
     }
 }
+
+class CustomBroadcastReceiver : BroadcastReceiver() {
+    companion object {
+        const val ACTION = "com.example.cryptodetails.EXAMPLE_ACTION"
+        const val EXTRA_DATA = "com.example.cryptodetails.EXAMPLE_EXTRA_DATA"
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if (intent?.action?.equals(ACTION) == true) {
+            Toast.makeText(context, intent.getStringExtra(EXTRA_DATA), Toast.LENGTH_LONG).show()
+        }
+    }
+
+}
