@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         ContextHolder.app = application
         ContextHolder.context = baseContext
 
-        registerReceiver(NetworkStatusChangeReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        registerBroadcastReceivers()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,9 +45,20 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    private fun registerBroadcastReceivers() {
+        registerReceiver(
+            NetworkStatusChangeReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+    }
+
+    private fun unregisterBroadcastReceivers() {
+        unregisterReceiver(NetworkStatusChangeReceiver())
+    }
+
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(NetworkStatusChangeReceiver())
+        unregisterBroadcastReceivers()
     }
 }
 
