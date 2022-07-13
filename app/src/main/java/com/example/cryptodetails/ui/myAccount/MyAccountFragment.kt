@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
 import kotlinx.coroutines.flow.collectLatest
 
@@ -49,7 +51,8 @@ class MyAccountFragment : Fragment() {
 
     private fun showImagePickingOptionsDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        builder.setTitle("Select an image")
+        builder.setTitle(R.string.image_picker_dialog_title)
+        builder.setMessage(R.string.image_picker_dialog_msg)
         builder.setPositiveButton("Gallery") { dialog, which ->
             if (!checkStoragePermission()) {
                 requestStoragePermission()
@@ -71,30 +74,35 @@ class MyAccountFragment : Fragment() {
     }
 
     private fun launchCameraIntent() {
-
+        Toast.makeText(context, "Camera Selected", Toast.LENGTH_LONG).show()
     }
 
     private fun launchGalleryIntent() {
-
+        Toast.makeText(context, "Gallery Selected", Toast.LENGTH_LONG).show()
     }
 
     private fun requestStoragePermission() {
         activity?.requestPermissions(
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            writeExternalPermissionRequestCode
+            WRITE_EXTERNAL_PERMISSION_REQUEST_CODE
         )
-    }
-
-    companion object {
-        const val cameraPermissionRequestCode = 100
-        const val writeExternalPermissionRequestCode = 101
+        Toast.makeText(context, "Storage Permission requested", Toast.LENGTH_LONG).show()
     }
 
     private fun requestCameraPermission() {
         activity?.requestPermissions(
-            arrayOf(Manifest.permission.CAMERA), cameraPermissionRequestCode
+            arrayOf(Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_REQUEST_CODE
         )
+        Toast.makeText(context, "Camera Permission requested", Toast.LENGTH_LONG).show()
     }
+
+
+    companion object {
+        const val CAMERA_PERMISSION_REQUEST_CODE = 100
+        const val WRITE_EXTERNAL_PERMISSION_REQUEST_CODE = 101
+    }
+
 
     private fun checkCameraPermission() = ContextCompat.checkSelfPermission(
         requireActivity(),

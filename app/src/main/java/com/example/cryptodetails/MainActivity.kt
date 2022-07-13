@@ -2,8 +2,10 @@ package com.example.cryptodetails
 
 import android.Manifest
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.cryptodetails.app.CustomBroadcastReceiver
 import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
+import com.example.cryptodetails.ui.myAccount.MyAccountFragment
 import com.example.cryptodetails.util.ContextHolder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -76,6 +79,27 @@ class MainActivity : AppCompatActivity() {
     private fun unregisterBroadcastReceivers() {
         unregisterReceiver(NetworkStatusChangeReceiver())
         unregisterReceiver(customBroadcastReceiver)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MyAccountFragment.CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == MyAccountFragment.WRITE_EXTERNAL_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     override fun onDestroy() {
