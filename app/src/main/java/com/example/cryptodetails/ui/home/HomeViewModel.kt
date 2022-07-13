@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
 
-    var searchText: MutableStateFlow<String> = MutableStateFlow<String>("")
+    val searchText: MutableStateFlow<String> = MutableStateFlow("")
 
-    var codeName: MutableStateFlow<String> = MutableStateFlow<String>("")
+    val codeName: MutableStateFlow<String> = MutableStateFlow("")
 
-    var fullName: MutableStateFlow<String> = MutableStateFlow<String>("")
+    val fullName: MutableStateFlow<String> = MutableStateFlow("")
 
     private var _currencyStateFlow = MutableStateFlow<ArrayList<Currency>?>(ArrayList())
     val currencyStateFlow = _currencyStateFlow.asStateFlow()
@@ -30,3 +30,4 @@ class HomeViewModel : ViewModel() {
         Repository.getCurrencies(_currencyStateFlow)
     }
 }
+// registered and customized broadcast receivers.

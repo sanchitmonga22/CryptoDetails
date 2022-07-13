@@ -21,8 +21,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
@@ -51,11 +49,11 @@ class HomeFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             homeViewModel.currencyStateFlow.collectLatest {
                 if (it == null) {
-                    Toast.makeText(
-                        context,
-                        "An ERROR occurred, please check the network connection and try again later",
-                        Toast.LENGTH_LONG
-                    ).show()
+//                    Toast.makeText(
+//                        context,
+//                        "An ERROR occurred, please check the network connection and try again later",
+//                        Toast.LENGTH_LONG
+//                    ).show()
                 } else {
                     binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), it))
                 }
