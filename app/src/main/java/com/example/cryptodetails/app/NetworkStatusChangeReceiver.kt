@@ -31,6 +31,26 @@ class CustomBroadcastReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+
+//        can be specified when sending a broadcast using sendOrderedBroadcast()
+//        resultCode
+//        resultData
+//        getResultExtras(true).getString("")
+//        setResult()
+
+//        context.sendOrderedBroadcast()
+//        define these broadcasts in the manifest file
+//        can also define the priority in which we want to run it.\
+
+//        abortBroadcast
+//        can be used to abort the broadcast if there are further broadcasts in progress
+
+        // For heavy operations on background threads in broadcasts.
+//        val pendingResult = goAsync()
+//        ********ASYNC WORK HERE*******
+//        pendingResult.finish()
+
+
         if (intent?.action?.equals(ACTION) == true) {
             Toast.makeText(context, intent.getStringExtra(EXTRA_DATA), Toast.LENGTH_LONG).show()
         }

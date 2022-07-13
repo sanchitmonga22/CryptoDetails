@@ -1,9 +1,11 @@
 package com.example.cryptodetails
 
+import android.Manifest
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -52,6 +54,22 @@ class MainActivity : AppCompatActivity() {
             NetworkStatusChangeReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
+
+        /**
+         * [registerReceiver]
+         * @Override
+         * public Intent registerReceiver(@Nullable BroadcastReceiver receiver, IntentFilter filter,
+         * @Nullable String broadcastPermission, @Nullable Handler scheduler) {
+         *
+         * provides options to add permissions that needs to be requested, before someone can send a broadcast to this app.
+         *
+         * CUSTOM_PERMISSION: A receiver can create a custom permission that can be required by the broadcaster, in order to broadcast a message
+         * the permission can be defined in the [Manifest.permission] in the <permission> tag in the reciever and that also needs to be updated in
+         * the <user-permission> tag in the broadcast app
+         *
+         * [LocalBroadcastManager]:
+         * similar to livedata, can be used within the app
+         */
         registerReceiver(customBroadcastReceiver, IntentFilter(CustomBroadcastReceiver.ACTION))
     }
 
