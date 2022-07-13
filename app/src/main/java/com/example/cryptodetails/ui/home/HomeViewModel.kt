@@ -1,20 +1,22 @@
 package com.example.cryptodetails.ui.home
 
 import android.widget.AdapterView
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cryptodetails.data.Repository
 import com.example.cryptodetails.model.Currency
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
 
-    var searchText: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
+    var searchText: MutableStateFlow<String> = MutableStateFlow<String>("")
 
-    var codeName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
+    var codeName: MutableStateFlow<String> = MutableStateFlow<String>("")
 
-    var fullName: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
+    var fullName: MutableStateFlow<String> = MutableStateFlow<String>("")
 
-    val currenciesLiveData = MutableLiveData<ArrayList<Currency>>()
+    private var _currencyStateFlow = MutableStateFlow<ArrayList<Currency>?>(ArrayList())
+    val currencyStateFlow = _currencyStateFlow.asStateFlow()
 
     val searchItemClickListener =
         AdapterView.OnItemClickListener { parent, _, position, _ ->
@@ -25,6 +27,6 @@ class HomeViewModel : ViewModel() {
         }
 
     fun makeAPICall() {
-        Repository.getCurrencies(currenciesLiveData)
+        Repository.getCurrencies(_currencyStateFlow)
     }
 }
