@@ -3,9 +3,7 @@ package com.example.cryptodetails.ui.myAccount
 import android.Manifest
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -43,7 +41,6 @@ class MyAccountFragment : Fragment() {
         _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         binding.profileImage.setOnClickListener {
             showImagePickingOptionsDialog()
         }
@@ -71,7 +68,6 @@ class MyAccountFragment : Fragment() {
         builder.setNegativeButton("Camera") { dialog, which ->
             if (!checkCameraPermission()) { // || !checkStoragePermission()
                 requestCameraPermission()
-//                requestStoragePermission()
             } else {
                 launchCameraIntent()
                 dialog.dismiss()
@@ -93,70 +89,43 @@ class MyAccountFragment : Fragment() {
             photoFile
         )
         try {
-            takePicture!!.launch(uri)
+            clickPictureActivityResult.launch(
+                FileProvider.getUriForFile(
+                    requireContext(),
+                    authorityName,
+                    photoFile
+                )
+            )
         } catch (ex: ActivityNotFoundException) {
-            ex.printStackTrace()
+            Toast.makeText(context, "An error occurred with the CAMERA intent", Toast.LENGTH_LONG)
         }
-
     }
 
     private lateinit var uri: Uri
 
-    private val takePicture =
+    private val clickPictureActivityResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
-            Toast.makeText(context, "GLIDE IS HERE", Toast.LENGTH_LONG).show()
             if (isSaved) {
-                Glide
-                    .with(requireContext())
+                Glide.with(requireContext())
                     .load(uri)
                     .into(binding.profileImage)
             }
         }
 
-
-//    private fun launchCameraIntent() {
-//        Toast.makeText(context, "Camera Selected", Toast.LENGTH_LONG).show()
-//        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        try {
-//            cameraIntentResultLauncher.launch(cameraIntent)
-//        } catch (e: ActivityNotFoundException) {
-//            Toast.makeText(context, "Intent not working", Toast.LENGTH_LONG).show()
-//        }
-//    }
-
-    private val cameraIntentResultLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) {
-            // should use ActivityContract. the new APIs to get the image uri
-            // use glide to laod the image into the imageView
-
-                result ->
-            // TODO: save this in the viewmodel and call it in the activity and add the image
-            binding.profileImage.setImageBitmap(result as Bitmap)
+    private val selectImageFromGalleryResult =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            Glide.with(requireContext())
+                .load(uri)
+                .into(binding.profileImage)
         }
-
-//    private val galleryIntentResultLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-////                val selectedImageURI: Uri = result.data.getpa
-//                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-//                val cursor: Cursor? = activity?.getContentResolver()?.query(
-//
-//                    selectedImageURI,
-//                    filePathColumn, null, null, null
-//                )
-//                cursor?.moveToFirst()
-//
-//                val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
-//                val picturePath: String? = cursor?.getString(columnIndex!!)
-//                cursor?.close()
-//
-//                binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath!!))
-//            }
-//        }
 
     private fun launchGalleryIntent() {
         Toast.makeText(context, "Gallery Selected", Toast.LENGTH_LONG).show()
-        Intent("image/*").setAction(Intent.ACTION_GET_CONTENT)
+        try {
+            selectImageFromGalleryResult.launch("image/*")
+        } catch (ex: ActivityNotFoundException) {
+            ex.printStackTrace()
+        }
     }
 
     private fun requestStoragePermission() {
@@ -175,14 +144,10 @@ class MyAccountFragment : Fragment() {
         Toast.makeText(context, "Camera Permission requested", Toast.LENGTH_LONG).show()
     }
 
-
     companion object {
         const val CAMERA_PERMISSION_REQUEST_CODE = 100
         const val WRITE_EXTERNAL_PERMISSION_REQUEST_CODE = 101
-//        const val CAMERA_INTENT_RESULT_CODE = 5
-//        const val GALLERY_INTENT_RESULT_CODE = 6
     }
-
 
     private fun checkCameraPermission() = ContextCompat.checkSelfPermission(
         requireActivity(),
@@ -193,7 +158,6 @@ class MyAccountFragment : Fragment() {
         requireActivity(),
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     ) == PackageManager.PERMISSION_GRANTED
-
 
     override fun onDestroyView() {
         super.onDestroyView()
