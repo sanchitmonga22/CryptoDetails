@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
-import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 
 class MyAccountFragment : Fragment() {
@@ -37,8 +36,9 @@ class MyAccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         myAccountViewModel = ViewModelProvider(this)[MyAccountViewModel::class.java]
-
         _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
+        binding.viewModel = myAccountViewModel
+
         val root: View = binding.root
 
         binding.profileImage.setOnClickListener {
@@ -98,16 +98,16 @@ class MyAccountFragment : Fragment() {
     private val clickPictureActivityResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
             if (isSaved) {
-                lifecycleScope.launchWhenStarted {
-                    myAccountViewModel.profileImageUri.emit(uri)
+                lifecycleScope.launchWhenCreated {
+                    myAccountViewModel.updateImageUri(uri.toString())
                 }
             }
         }
 
     private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            lifecycleScope.launchWhenStarted {
-                myAccountViewModel.profileImageUri.emit(uri)
+            lifecycleScope.launchWhenCreated {
+                myAccountViewModel.updateImageUri(uri.toString())
             }
         }
 

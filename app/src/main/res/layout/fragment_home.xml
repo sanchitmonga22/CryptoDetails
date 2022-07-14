@@ -55,8 +55,9 @@
                 android:id="@+id/code_name"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="@={viewModel.codeName}"
+                android:text="@{viewModel.codeName}"
                 android:textColor="@color/cardview_dark_background" />
+
         </LinearLayout>
 
         <LinearLayout

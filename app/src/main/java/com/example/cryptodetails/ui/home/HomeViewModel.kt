@@ -11,7 +11,7 @@ class HomeViewModel : ViewModel() {
 
     val searchText: MutableStateFlow<String> = MutableStateFlow("")
 
-    val codeName: MutableStateFlow<String> = MutableStateFlow("")
+    val codeName: MutableStateFlow<String> = MutableStateFlow("Monga")
 
     val fullName: MutableStateFlow<String> = MutableStateFlow("")
 
