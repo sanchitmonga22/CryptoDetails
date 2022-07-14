@@ -17,7 +17,6 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -30,13 +29,14 @@ class MyAccountFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var myAccountViewModel: MyAccountViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val myAccountViewModel = ViewModelProvider(this)[MyAccountViewModel::class.java]
+        myAccountViewModel = ViewModelProvider(this)[MyAccountViewModel::class.java]
 
         _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -44,37 +44,33 @@ class MyAccountFragment : Fragment() {
         binding.profileImage.setOnClickListener {
             showImagePickingOptionsDialog()
         }
-
-        lifecycleScope.launchWhenCreated {
-            myAccountViewModel.text.collectLatest {
-
-            }
-        }
         return root
     }
 
     private fun showImagePickingOptionsDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        builder.setTitle(R.string.image_picker_dialog_title)
-        builder.setMessage(R.string.image_picker_dialog_msg)
-        builder.setPositiveButton("Gallery") { dialog, which ->
-            if (!checkStoragePermission()) {
-                requestStoragePermission()
-            } else {
-                launchGalleryIntent()
-                dialog.dismiss()
+        AlertDialog.Builder(context)
+            .setTitle(R.string.image_picker_dialog_title)
+            .setMessage(R.string.image_picker_dialog_msg)
+            .setPositiveButton(R.string.image_picker_dialog_gallery_option) { dialog, _ ->
+                if (!checkStoragePermission()) {
+                    requestStoragePermission()
+                } else {
+                    launchGalleryIntent()
+                    dialog.dismiss()
+                }
             }
-        }
-        builder.setNegativeButton("Camera") { dialog, which ->
-            if (!checkCameraPermission()) { // || !checkStoragePermission()
-                requestCameraPermission()
-            } else {
-                launchCameraIntent()
-                dialog.dismiss()
+            .setNegativeButton(R.string.image_picker_dialog_camera_option) { dialog, _ ->
+                if (!checkCameraPermission()) {
+                    requestCameraPermission()
+                } else {
+                    launchCameraIntent()
+                    dialog.dismiss()
+                }
             }
-        }
-        builder.show()
+            .show()
     }
+
+    // region Camera and Gallery intents
 
     private fun launchCameraIntent() {
         val photoFile = File.createTempFile(
@@ -83,11 +79,7 @@ class MyAccountFragment : Fragment() {
             requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         )
         val authorityName = "${requireContext().packageName}.provider"
-        uri = FileProvider.getUriForFile(
-            requireContext(),
-            authorityName,
-            photoFile
-        )
+        uri = FileProvider.getUriForFile(requireContext(), authorityName, photoFile)
         try {
             clickPictureActivityResult.launch(
                 FileProvider.getUriForFile(
@@ -97,7 +89,7 @@ class MyAccountFragment : Fragment() {
                 )
             )
         } catch (ex: ActivityNotFoundException) {
-            Toast.makeText(context, "An error occurred with the CAMERA intent", Toast.LENGTH_LONG)
+            ex.printStackTrace()
         }
     }
 
@@ -106,28 +98,30 @@ class MyAccountFragment : Fragment() {
     private val clickPictureActivityResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
             if (isSaved) {
-                Glide.with(requireContext())
-                    .load(uri)
-                    .into(binding.profileImage)
+                lifecycleScope.launchWhenStarted {
+                    myAccountViewModel.profileImageUri.emit(uri)
+                }
             }
         }
 
-    private val selectImageFromGalleryResult =
+    private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            Glide.with(requireContext())
-                .load(uri)
-                .into(binding.profileImage)
+            lifecycleScope.launchWhenStarted {
+                myAccountViewModel.profileImageUri.emit(uri)
+            }
         }
 
     private fun launchGalleryIntent() {
-        Toast.makeText(context, "Gallery Selected", Toast.LENGTH_LONG).show()
         try {
-            selectImageFromGalleryResult.launch("image/*")
+            selectImageFromGalleryActivityResult.launch("image/*")
         } catch (ex: ActivityNotFoundException) {
             ex.printStackTrace()
         }
     }
 
+    // endregion
+
+    // region Permissions
     private fun requestStoragePermission() {
         activity?.requestPermissions(
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -158,6 +152,8 @@ class MyAccountFragment : Fragment() {
         requireActivity(),
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     ) == PackageManager.PERMISSION_GRANTED
+
+    // endregion
 
     override fun onDestroyView() {
         super.onDestroyView()

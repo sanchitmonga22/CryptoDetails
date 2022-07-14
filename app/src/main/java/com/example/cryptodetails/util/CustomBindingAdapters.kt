@@ -1,10 +1,15 @@
 package com.example.cryptodetails.util
 
-object CustomBindingAdapters {
+import android.net.Uri
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 
-//    @JvmStatic
-//    @BindingAdapter("android:adapter")
-//    fun setAdapter(autoCompleteTextView: MaterialAutoCompleteTextView, adapter: ArrayAdapter<Currency>()) {
-//
-//    }
+object CustomBindingAdapters {
+    @BindingAdapter("imageUri")
+    fun ImageView.loadImage(uri: Uri?) {
+        Glide.with(context)
+            .load(uri)
+            .into(this)
+    }
 }
