@@ -24,11 +24,7 @@ import java.io.File
 import java.io.IOException
 
 class MyAccountFragment : Fragment() {
-
     private var _binding: FragmentMyAccountBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var myAccountViewModel: MyAccountViewModel
 
@@ -83,13 +79,7 @@ class MyAccountFragment : Fragment() {
         val authorityName = "${requireContext().packageName}.provider"
         uri = FileProvider.getUriForFile(requireContext(), authorityName, photoFile)
         try {
-            clickPictureActivityResult.launch(
-                FileProvider.getUriForFile(
-                    requireContext(),
-                    authorityName,
-                    photoFile
-                )
-            )
+            clickPictureActivityResult.launch(uri)
         } catch (ex: ActivityNotFoundException) {
             ex.printStackTrace()
         }
@@ -119,7 +109,7 @@ class MyAccountFragment : Fragment() {
     private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             lifecycleScope.launchWhenStarted {
-                kotlin.runCatching {
+                runCatching {
                     readBytes(context!!, uri!!)
                 }.onSuccess {
                     myAccountViewModel.updateAndSaveImage(uri!!, it)
