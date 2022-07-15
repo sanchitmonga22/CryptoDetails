@@ -12,7 +12,7 @@ object CustomBindingAdapters {
     fun ImageView.loadImageFromUri(uri: Uri) {
         Glide.with(context)
             .load(uri)
-            .error(R.drawable.ic_launcher_foreground)
+            .error(R.drawable.error_loading_image)
             .into(this)
     }
 }

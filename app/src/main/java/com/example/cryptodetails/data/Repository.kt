@@ -43,15 +43,14 @@ object Repository {
     fun saveImage(
         imageUri: Uri,
         byteArray: ByteArray,
-        imageUploadCallback: (wasUploaded: Boolean) -> Unit
+        imageUploadCallback: (wasUploadedSuccessfully: Boolean) -> Unit
     ) {
         CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
             try {
                 val imageFile = Utility.writeBytesAsImage(byteArray)
                 val requestBody = RequestBody.create(
-                    MediaType.parse(
-                        ContextHolder.context!!.contentResolver.getType(imageUri)!! // "image/*". "multipart/form-data"
-                    ), imageFile
+                    MediaType.parse(ContextHolder.context!!.contentResolver.getType(imageUri)!!),
+                    imageFile
                 )
                 val parts =
                     MultipartBody.Part.createFormData("profileImage", imageFile.name, requestBody)

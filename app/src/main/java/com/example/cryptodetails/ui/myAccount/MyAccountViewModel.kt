@@ -2,11 +2,9 @@ package com.example.cryptodetails.ui.myAccount
 
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptodetails.data.Repository
-import com.example.cryptodetails.util.ContextHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -17,18 +15,15 @@ class MyAccountViewModel : ViewModel() {
 
     fun updateAndSaveImage(uri: Uri, byteArray: ByteArray?) {
         byteArray?.let {
-            Repository.saveImage(uri, byteArray) { imageWasUploadedSuccessfully ->
+            Repository.saveImage(uri, byteArray) { wasUploadedSuccessfully ->
                 viewModelScope.launch(Dispatchers.Main) {
-                    if (imageWasUploadedSuccessfully) {
+                    if (wasUploadedSuccessfully) {
                         // FIXME: updates are not applied immeditely.
                         this@MyAccountViewModel.profileImageUri.value = uri
                         this@MyAccountViewModel.profileImageUri.emit(uri)
                     } else {
-                        Toast.makeText(
-                            ContextHolder.context?.applicationContext,
-                            "Image upload failed",
-                            Toast.LENGTH_LONG
-                        )
+                        this@MyAccountViewModel.profileImageUri.value = Uri.parse("")
+                        this@MyAccountViewModel.profileImageUri.emit(Uri.parse(""))
                         Log.d("MyAccountVM", "updateAndSaveImage: FAILEDDDDD ")
                     }
                 }
