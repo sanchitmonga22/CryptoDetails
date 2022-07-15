@@ -1,10 +1,6 @@
 package com.example.cryptodetails.data
 
-import android.content.Context
-import android.database.Cursor
 import android.net.Uri
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.util.Log
 import com.example.cryptodetails.model.Currency
 import com.example.cryptodetails.network.CurrenciesAPI
@@ -24,7 +20,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-
 
 object Repository {
 
@@ -46,53 +41,13 @@ object Repository {
         }
     }
 
-    private fun getPath(context: Context, uri: Uri): String? {
-        val docId = DocumentsContract.getDocumentId(uri)
-        val split = docId.split(":").toTypedArray()
-
-        val contentUri: Uri? = when (split[0]) {
-            "image" -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            "video" -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            "audio" -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            else -> Uri.parse("")
-        }
-
-        return getDataColumn(context, contentUri, "_id=?", arrayOf(split[1]))
-    }
-
-    private fun getDataColumn(
-        context: Context,
-        uri: Uri?,
-        selection: String?,
-        selectionArgs: Array<String>
-    ): String? {
-        var cursor: Cursor? = null
-        val column = "_data"
-        try {
-            cursor = context.contentResolver.query(
-                uri!!,
-                arrayOf(column),
-                selection,
-                selectionArgs,
-                null
-            )
-            if (cursor != null && cursor.moveToFirst()) {
-                val column_index = cursor.getColumnIndexOrThrow(column)
-                return cursor.getString(column_index)
-            }
-        } finally {
-            cursor?.close()
-        }
-        return null
-    }
-
     fun saveImage(imageUri: Uri) {
         CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
             try {
                 //            val path = Utility.getPath(imageUri)
                 val path = imageUri.path
 //            val imageFile = File(path!!)
-                val imageFile = File(getPath(ContextHolder.context!!, imageUri)!!)
+                val imageFile = File(Utility.getPath(ContextHolder.context!!, imageUri)!!)
                 val requestBody = RequestBody.create(
                     MediaType.parse(
                         ContextHolder.context!!.contentResolver.getType(imageUri)!! // "image/*". "multipart/form-data"

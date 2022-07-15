@@ -1,11 +1,13 @@
 package com.example.cryptodetails.util
 
+import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import java.net.InetAddress
 import java.net.UnknownHostException
@@ -67,5 +69,47 @@ object Utility {
         val s: String = cursor.getString(columnIndex)
         cursor.close()
         return s
+    }
+
+    @JvmStatic
+    fun getPath(context: Context, uri: Uri): String? {
+        val docId = DocumentsContract.getDocumentId(uri)
+        val split = docId.split(":").toTypedArray()
+
+        val contentUri: Uri? = when (split[0]) {
+            "image" -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            "video" -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            "audio" -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            else -> Uri.parse("")
+        }
+
+        return getDataColumn(context, contentUri, "_id=?", arrayOf(split[1]))
+    }
+
+    @JvmStatic
+    private fun getDataColumn(
+        context: Context,
+        uri: Uri?,
+        selection: String?,
+        selectionArgs: Array<String>
+    ): String? {
+        var cursor: Cursor? = null
+        val column = "_data"
+        try {
+            cursor = context.contentResolver.query(
+                uri!!,
+                arrayOf(column),
+                selection,
+                selectionArgs,
+                null
+            )
+            if (cursor != null && cursor.moveToFirst()) {
+                val column_index = cursor.getColumnIndexOrThrow(column)
+                return cursor.getString(column_index)
+            }
+        } finally {
+            cursor?.close()
+        }
+        return null
     }
 }
