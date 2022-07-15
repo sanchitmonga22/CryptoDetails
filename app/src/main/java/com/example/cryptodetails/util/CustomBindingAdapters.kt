@@ -10,9 +10,9 @@ import com.google.android.material.textview.MaterialTextView
 object CustomBindingAdapters {
     @JvmStatic
     @BindingAdapter("app:imageUriString")
-    fun ImageView.loadImageFromUri(uriString: String) {
+    fun ImageView.loadImageFromUri(uri: Uri) {
         Glide.with(context)
-            .load(Uri.parse(uriString))
+            .load(uri)
             .error(R.drawable.ic_launcher_foreground)
             .into(this)
     }

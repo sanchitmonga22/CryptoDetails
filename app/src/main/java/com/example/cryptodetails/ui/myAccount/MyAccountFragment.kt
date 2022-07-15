@@ -99,7 +99,7 @@ class MyAccountFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
             if (isSaved) {
                 lifecycleScope.launchWhenCreated {
-                    myAccountViewModel.updateImageUri(uri.toString())
+                    myAccountViewModel.updateImageUri(uri)
                 }
             }
         }
@@ -107,7 +107,7 @@ class MyAccountFragment : Fragment() {
     private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             lifecycleScope.launchWhenCreated {
-                myAccountViewModel.updateImageUri(uri.toString())
+                myAccountViewModel.updateImageUri(uri!!)
             }
         }
 

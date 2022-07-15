@@ -1,9 +1,12 @@
 package com.example.cryptodetails.util
 
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.database.Cursor
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -53,4 +56,15 @@ object Utility {
         return false
     }
 
+    fun getPath(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor =
+            ContextHolder.context!!.contentResolver.query(uri, projection, null, null, null)
+                ?: return null
+        val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val s: String = cursor.getString(columnIndex)
+        cursor.close()
+        return s
+    }
 }
