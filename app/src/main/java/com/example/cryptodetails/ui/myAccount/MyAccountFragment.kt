@@ -101,11 +101,10 @@ class MyAccountFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
             if (isSaved) {
                 lifecycleScope.launchWhenStarted {
-                    myAccountViewModel.updateImageUri(uri)
                     runCatching {
                         readBytes(requireContext(), uri)
                     }.onSuccess {
-                        myAccountViewModel.saveImage(uri, it)
+                        myAccountViewModel.updateAndSaveImage(uri, it)
                     }.onFailure {
                         it.printStackTrace()
                     }
@@ -120,11 +119,10 @@ class MyAccountFragment : Fragment() {
     private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             lifecycleScope.launchWhenStarted {
-                myAccountViewModel.updateImageUri(uri!!)
                 kotlin.runCatching {
-                    readBytes(context!!, uri)
+                    readBytes(context!!, uri!!)
                 }.onSuccess {
-                    myAccountViewModel.saveImage(uri, it)
+                    myAccountViewModel.updateAndSaveImage(uri!!, it)
                 }.onFailure {
                     it.printStackTrace()
                 }
