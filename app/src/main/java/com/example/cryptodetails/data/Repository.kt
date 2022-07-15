@@ -1,7 +1,6 @@
 package com.example.cryptodetails.data
 
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import com.example.cryptodetails.model.Currency
 import com.example.cryptodetails.network.CurrenciesAPI
@@ -21,8 +20,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
 
 object Repository {
 
@@ -44,15 +41,6 @@ object Repository {
         }
     }
 
-    fun writeBytesAsPdf(bytes: ByteArray): File {
-        val path = ContextHolder.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val file = File.createTempFile("my_file", ".jpg", path)
-        val os = FileOutputStream(file);
-        os.write(bytes);
-        os.close();
-        return file
-    }
-
     fun saveImage(imageUri: Uri, byteArray: ByteArray) {
         CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
             try {
@@ -61,7 +49,7 @@ object Repository {
 //                val path = imageUri.path
 //            val imageFile = File(path!!)
 //                val imageFile = File(Utility.getPath(ContextHolder.context!!, imageUri)!!)
-                val imageFile = writeBytesAsPdf(byteArray)
+                val imageFile = Utility.writeBytesAsImage(byteArray)
                 val requestBody = RequestBody.create(
                     MediaType.parse(
                         ContextHolder.context!!.contentResolver.getType(imageUri)!! // "image/*". "multipart/form-data"
