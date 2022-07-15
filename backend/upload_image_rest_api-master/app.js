@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1000000
+        fileSize: 100000000
     }
 })
 app.use('/profile', express.static('upload/images'));
