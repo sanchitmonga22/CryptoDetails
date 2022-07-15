@@ -16,6 +16,11 @@ class MyAccountViewModel : ViewModel() {
         viewModelScope.launch {
             this@MyAccountViewModel.profileImageUri.emit(uri)
         }
-        Repository.saveImage(uri)
+    }
+
+    fun saveImage(uri: Uri, byteArray: ByteArray?) {
+        byteArray?.let {
+            Repository.saveImage(uri, byteArray)
+        }
     }
 }
