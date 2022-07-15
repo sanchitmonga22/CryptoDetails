@@ -36,6 +36,7 @@ class MyAccountFragment : Fragment() {
         myAccountViewModel = ViewModelProvider(this)[MyAccountViewModel::class.java]
         _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
         binding.viewModel = myAccountViewModel
+        binding.lifecycleOwner = this@MyAccountFragment
 
         val root: View = binding.root
 
