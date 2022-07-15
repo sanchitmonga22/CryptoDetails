@@ -30,4 +30,3 @@ class HomeViewModel : ViewModel() {
         Repository.getCurrencies(_currencyStateFlow)
     }
 }
-// registered and customized broadcast receivers.

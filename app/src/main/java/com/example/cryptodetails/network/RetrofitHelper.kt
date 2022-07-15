@@ -1,5 +1,6 @@
 package com.example.cryptodetails.network
 
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -9,5 +10,25 @@ object RetrofitHelper {
         return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+}
+
+object LocalHostRetrofit {
+    private const val IP = ""
+    private const val IP1 = "10.0.2.2"
+    private const val baseUrl = "http://${IP}:4000/"
+    private val client: OkHttpClient = OkHttpClient.Builder().build()
+
+    @JvmStatic
+    private var retrofit: Retrofit? = null
+
+    fun getInstance(): Retrofit {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder().baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+        }
+        return retrofit!!
     }
 }

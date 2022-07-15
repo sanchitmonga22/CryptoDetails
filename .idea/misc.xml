@@ -6,6 +6,7 @@
         <entry key="../../.gradle/caches/transforms-3/6b13907b11536d44eae8da6e0dc79945/transformed/appcompat-1.4.2/res/layout/select_dialog_item_material.xml" value="0.13829787234042554" />
         <entry key="../../Library/Android/sdk/platforms/android-32/android.jar!/res/layout/simple_list_item_2.xml" value="0.13829787234042554" />
         <entry key="app/src/main/res/drawable-v23/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14705882352941177" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1919191919191919" />
+        <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.19805603027343752" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/list_items_search_bar.xml" value="0.13779128672745694" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24647887323943662" />

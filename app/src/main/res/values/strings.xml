@@ -6,4 +6,9 @@
     <string name="search">Search</string>
     <string name="code">Code:</string>
     <string name="name">Name:</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="image_picker_dialog_title">Image Picker</string>
+    <string name="image_picker_dialog_msg">Select the source for the image</string>
+    <string name="image_picker_dialog_gallery_option">Gallery</string>
+    <string name="image_picker_dialog_camera_option">Camera</string>
 </resources>
