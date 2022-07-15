@@ -63,10 +63,12 @@ object Repository {
                         response: Response<ResponseBody?>
                     ) {
                         imageUploadCallback(true)
+                        if (imageFile.exists()) imageFile.delete()
                     }
 
                     override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                         imageUploadCallback(false)
+                        if (imageFile.exists()) imageFile.delete()
                         t.printStackTrace()
                     }
                 })

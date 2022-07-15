@@ -1,7 +1,6 @@
 package com.example.cryptodetails.ui.myAccount
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptodetails.data.Repository
@@ -13,6 +12,12 @@ class MyAccountViewModel : ViewModel() {
     val profileImageUri: MutableStateFlow<Uri> =
         MutableStateFlow(Uri.parse("https://picsum.photos/200/300?random=1"))
 
+    val imageText: MutableStateFlow<String> = MutableStateFlow("RANDOM_NAME")
+
+    companion object {
+        private val emptyUri = Uri.parse("")
+    }
+
     fun updateAndSaveImage(uri: Uri, byteArray: ByteArray?) {
         byteArray?.let {
             Repository.saveImage(uri, byteArray) { wasUploadedSuccessfully ->
@@ -20,11 +25,10 @@ class MyAccountViewModel : ViewModel() {
                     if (wasUploadedSuccessfully) {
                         // FIXME: updates are not applied immeditely.
                         this@MyAccountViewModel.profileImageUri.value = uri
-                        this@MyAccountViewModel.profileImageUri.emit(uri)
+                        this@MyAccountViewModel.imageText.value = uri.toString()
                     } else {
-                        this@MyAccountViewModel.profileImageUri.value = Uri.parse("")
-                        this@MyAccountViewModel.profileImageUri.emit(Uri.parse(""))
-                        Log.d("MyAccountVM", "updateAndSaveImage: FAILEDDDDD ")
+                        this@MyAccountViewModel.profileImageUri.value = emptyUri
+                        this@MyAccountViewModel.imageText.value = "ERROR"
                     }
                 }
             }
