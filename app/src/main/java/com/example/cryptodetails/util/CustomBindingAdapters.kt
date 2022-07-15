@@ -5,7 +5,6 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.cryptodetails.R
-import com.google.android.material.textview.MaterialTextView
 
 object CustomBindingAdapters {
     @JvmStatic
@@ -15,11 +14,5 @@ object CustomBindingAdapters {
             .load(uri)
             .error(R.drawable.ic_launcher_foreground)
             .into(this)
-    }
-
-    @JvmStatic
-    @BindingAdapter("app:setText")
-    fun MaterialTextView.setImageText(text: String) {
-        this.text = text
     }
 }

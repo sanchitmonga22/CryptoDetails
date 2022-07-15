@@ -11,7 +11,7 @@ class HomeViewModel : ViewModel() {
 
     val searchText: MutableStateFlow<String> = MutableStateFlow("")
 
-    val codeName: MutableStateFlow<String> = MutableStateFlow("Monga")
+    val codeName: MutableStateFlow<String> = MutableStateFlow("")
 
     val fullName: MutableStateFlow<String> = MutableStateFlow("")
 
@@ -30,4 +30,3 @@ class HomeViewModel : ViewModel() {
         Repository.getCurrencies(_currencyStateFlow)
     }
 }
-// registered and customized broadcast receivers.

@@ -17,7 +17,6 @@ import com.example.cryptodetails.ui.adapters.CurrencyListAdapter
 import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : Fragment() {
-    // TODO: setup navigation through VM
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -49,11 +48,11 @@ class HomeFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             homeViewModel.currencyStateFlow.collectLatest {
                 if (it == null) {
-//                    Toast.makeText(
-//                        context,
-//                        "An ERROR occurred, please check the network connection and try again later",
-//                        Toast.LENGTH_LONG
-//                    ).show()
+                    Toast.makeText(
+                        context,
+                        "An ERROR occurred, please check the network connection and try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     binding.searchBar.setAdapter(CurrencyListAdapter(requireContext(), it))
                 }

@@ -56,6 +56,7 @@ object Utility {
         return false
     }
 
+    @JvmStatic
     fun getPath(uri: Uri): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor: Cursor =

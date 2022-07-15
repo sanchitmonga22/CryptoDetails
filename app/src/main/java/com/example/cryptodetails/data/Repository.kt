@@ -44,9 +44,9 @@ object Repository {
 
     fun saveImage(imageUri: Uri) {
         CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
-            val path = Utility.getPath(imageUri)
-            val path1 = imageUri.path
-            val imageFile = File(path)
+//            val path = Utility.getPath(imageUri)
+            val path = imageUri.path
+            val imageFile = File(path!!)
             val requestBody = RequestBody.create(
                 MediaType.parse(
                     ContextHolder.context!!.contentResolver.getType(imageUri)!! // "image/*". "multipart/form-data"

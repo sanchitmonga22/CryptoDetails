@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -107,10 +105,6 @@ class MainActivity : AppCompatActivity() {
         unregisterBroadcastReceivers()
     }
 }
-
-// bug fix for navigation between tabs
-//
-// use kotlin flows
 
 //        // Add your own reselected listener
 //        binding.navView.setOnItemReselectedListener { item ->
