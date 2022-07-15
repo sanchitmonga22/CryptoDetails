@@ -3,6 +3,7 @@ package com.example.cryptodetails.ui.myAccount
 import android.Manifest
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
 import java.io.File
+import java.io.IOException
 
 class MyAccountFragment : Fragment() {
 
@@ -98,16 +100,32 @@ class MyAccountFragment : Fragment() {
     private val clickPictureActivityResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSaved ->
             if (isSaved) {
-                lifecycleScope.launchWhenCreated {
-                    myAccountViewModel.updateImageUri(uri)
+                lifecycleScope.launchWhenStarted {
+                    runCatching {
+                        readBytes(requireContext(), uri)
+                    }.onSuccess {
+                        myAccountViewModel.updateAndSaveImage(uri, it)
+                    }.onFailure {
+                        it.printStackTrace()
+                    }
                 }
             }
         }
 
+    @Throws(IOException::class)
+    private fun readBytes(context: Context, uri: Uri): ByteArray? =
+        context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
+
     private val selectImageFromGalleryActivityResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            lifecycleScope.launchWhenCreated {
-                myAccountViewModel.updateImageUri(uri!!)
+            lifecycleScope.launchWhenStarted {
+                kotlin.runCatching {
+                    readBytes(context!!, uri!!)
+                }.onSuccess {
+                    myAccountViewModel.updateAndSaveImage(uri!!, it)
+                }.onFailure {
+                    it.printStackTrace()
+                }
             }
         }
 

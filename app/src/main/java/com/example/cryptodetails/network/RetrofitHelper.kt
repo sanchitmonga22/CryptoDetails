@@ -16,7 +16,7 @@ object RetrofitHelper {
 object LocalHostRetrofit {
     private const val IP = ""
     private const val IP1 = "10.0.2.2"
-    private const val baseUrl = "http://${IP}:4000/"
+    private const val baseUrl = "http://${IP1}:4000/"
     private val client: OkHttpClient = OkHttpClient.Builder().build()
 
     @JvmStatic

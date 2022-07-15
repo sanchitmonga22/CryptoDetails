@@ -1,7 +1,6 @@
 package com.example.cryptodetails.data
 
 import android.net.Uri
-import android.util.Log
 import com.example.cryptodetails.model.Currency
 import com.example.cryptodetails.network.CurrenciesAPI
 import com.example.cryptodetails.network.LocalHostRetrofit
@@ -16,10 +15,10 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 object Repository {
 
@@ -41,38 +40,39 @@ object Repository {
         }
     }
 
-    fun saveImage(imageUri: Uri) {
+    fun saveImage(
+        imageUri: Uri,
+        byteArray: ByteArray,
+        imageUploadCallback: (wasUploaded: Boolean) -> Unit
+    ) {
         CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
             try {
-                //            val path = Utility.getPath(imageUri)
-                val path = imageUri.path
-//            val imageFile = File(path!!)
-                val imageFile = File(Utility.getPath(ContextHolder.context!!, imageUri)!!)
+                val imageFile = Utility.writeBytesAsImage(byteArray)
                 val requestBody = RequestBody.create(
                     MediaType.parse(
                         ContextHolder.context!!.contentResolver.getType(imageUri)!! // "image/*". "multipart/form-data"
                     ), imageFile
                 )
-
                 val parts =
                     MultipartBody.Part.createFormData("profileImage", imageFile.name, requestBody)
-
                 val retroInstance =
                     LocalHostRetrofit.getInstance().create(UploadImageAPI::class.java)
                 val call = retroInstance.uploadImage(parts)
-
-                call.enqueue(object : Callback<RequestBody?> {
+                call.enqueue(object : Callback<ResponseBody?> {
                     override fun onResponse(
-                        call: Call<RequestBody?>, response: Response<RequestBody?>
+                        call: Call<ResponseBody?>,
+                        response: Response<ResponseBody?>
                     ) {
-                        Log.d("TAGGGGGG", "onResponse: ")
+                        imageUploadCallback(true)
                     }
 
-                    override fun onFailure(call: Call<RequestBody?>, t: Throwable) {
-                        Log.d("TAGGGGGG", "onFailure: ")
+                    override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                        imageUploadCallback(false)
+                        t.printStackTrace()
                     }
                 })
             } catch (ex: Exception) {
+                imageUploadCallback(false)
                 ex.printStackTrace()
             }
         }
