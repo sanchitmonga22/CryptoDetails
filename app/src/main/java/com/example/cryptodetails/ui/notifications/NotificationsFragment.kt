@@ -1,5 +1,8 @@
 package com.example.cryptodetails.ui.notifications
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +11,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.cryptodetails.MainActivity
 import com.example.cryptodetails.R
 import com.example.cryptodetails.app.CryptoApp
+import com.example.cryptodetails.app.NotificationBroadcastReceiver
 import com.example.cryptodetails.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {
@@ -37,15 +42,35 @@ class NotificationsFragment : Fragment() {
 
     private fun setupNotificationChannels() {
         binding.sendOnChannel1.setOnClickListener {
+            val contentIntent = PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, MainActivity::class.java),
+                PendingIntent.FLAG_MUTABLE
+            )
+            val actionIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                Intent(context, NotificationBroadcastReceiver::class.java).putExtra(
+                    NotificationBroadcastReceiver.TOAST_MESSAGE_KEY,
+                    binding.notificationBody.text.toString()
+                ),
+                PendingIntent.FLAG_MUTABLE
+            )
+
             val notificationChannel1 =
                 NotificationCompat.Builder(requireContext(), CryptoApp.CHANNEL_1)
                     .setSmallIcon(R.drawable.error_loading_image)
                     .setContentTitle(binding.notificationTitle.text)
                     .setContentText(binding.notificationBody.text)
+                    .setColor(Color.BLUE)
+                    .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
+                    .setOnlyAlertOnce(true)
+                    .addAction(R.mipmap.ic_launcher, "ToastMessage", actionIntent)
                     .build()
 
             notificationManager.notify(1, notificationChannel1)
-//                    .setCategory()
         }
 
         binding.sendOnChannel2.setOnClickListener {

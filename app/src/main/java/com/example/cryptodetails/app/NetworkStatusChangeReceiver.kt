@@ -56,3 +56,18 @@ class CustomBroadcastReceiver : BroadcastReceiver() {
         }
     }
 }
+
+class NotificationBroadcastReceiver : BroadcastReceiver() {
+    companion object {
+        const val TOAST_MESSAGE_KEY = "ToastMessage"
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        Toast.makeText(
+            context,
+            intent?.getStringExtra(TOAST_MESSAGE_KEY).toString(),
+            Toast.LENGTH_LONG
+        )
+    }
+
+}
