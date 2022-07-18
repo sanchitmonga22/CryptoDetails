@@ -11,4 +11,8 @@
     <string name="image_picker_dialog_msg">Select the source for the image</string>
     <string name="image_picker_dialog_gallery_option">Gallery</string>
     <string name="image_picker_dialog_camera_option">Camera</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="send_on_channel1">Send on High importannce Channel1</string>
+    <string name="send_on_channel2">Send on Low Importance Channel 2</string>
 </resources>
