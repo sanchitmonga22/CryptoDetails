@@ -55,5 +55,4 @@ class CustomBroadcastReceiver : BroadcastReceiver() {
             Toast.makeText(context, intent.getStringExtra(EXTRA_DATA), Toast.LENGTH_LONG).show()
         }
     }
-
 }
