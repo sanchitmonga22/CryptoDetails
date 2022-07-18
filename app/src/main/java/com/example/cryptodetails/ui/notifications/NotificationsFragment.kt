@@ -2,6 +2,7 @@ package com.example.cryptodetails.ui.notifications
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -61,9 +62,17 @@ class NotificationsFragment : Fragment() {
             val notificationChannel1 =
                 NotificationCompat.Builder(requireContext(), CryptoApp.CHANNEL_1)
                     .setSmallIcon(R.drawable.error_loading_image)
-                    .setContentTitle(binding.notificationTitle.text)
-                    .setContentText(binding.notificationBody.text)
+                    .setContentTitle(binding.notificationTitle.text.toString())
+                    .setContentText(binding.notificationBody.text.toString())
+                    .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.cryptoo))
+                    .setStyle(
+                        NotificationCompat.BigTextStyle()
+                            .bigText(getString(R.string.dummy_para))
+                            .setBigContentTitle("Big content Title")
+                            .setSummaryText("SUMMARY")
+                    )
                     .setColor(Color.BLUE)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true)
                     .setOnlyAlertOnce(true)
@@ -77,8 +86,20 @@ class NotificationsFragment : Fragment() {
             val notificationChannel2 =
                 NotificationCompat.Builder(requireContext(), CryptoApp.CHANNEL_2)
                     .setSmallIcon(R.drawable.error_loading_image)
-                    .setContentTitle(binding.notificationTitle.text)
-                    .setContentText(binding.notificationBody.text)
+                    .setContentTitle(binding.notificationTitle.text.toString())
+                    .setContentText(binding.notificationBody.text.toString())
+                    .setStyle(
+                        NotificationCompat.InboxStyle()
+                            .addLine("------Line 1----")
+                            .addLine("------Line 2----")
+                            .addLine("------Line 3----")
+                            .addLine("------Line 4----")
+                            .addLine("------Line 5----")
+                            .addLine("------Line 6----")
+                            .addLine("------Line 7----")
+                            .setBigContentTitle("Big content Title")
+                            .setSummaryText("SUMMARY")
+                    )
                     .setCategory(NotificationCompat.CATEGORY_ERROR)
                     .build()
 
