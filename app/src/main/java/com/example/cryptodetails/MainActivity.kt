@@ -112,3 +112,7 @@ class MainActivity : AppCompatActivity() {
 //            val reselectedDestinationId = item.itemId
 //            navController.popBackStack(reselectedDestinationId, inclusive = false)
 //        }
+
+// not running-> status bar
+// home page app running -> dialog or something
+// home page app running and notifications dragged down -> update to notifications.
