@@ -1,24 +1,34 @@
 package com.example.cryptodetails.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.ActivityLoginBinding
+import com.example.cryptodetails.ui.home.MainActivity
+import com.example.cryptodetails.util.ContextHolder
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var gso: GoogleSignInOptions
+    private lateinit var gsc: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,32 +36,70 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = binding.username
-        val password = binding.password
-        val login = binding.login
-        val loading = binding.loading
-
         loginViewModel =
             ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
+        setContext()
+        setupLoginUI()
+        setupGoogleOAuth()
+    }
+
+    private fun setContext() {
+        ContextHolder.app = application
+        ContextHolder.context = baseContext
+    }
+
+    private fun setupGoogleOAuth() {
+        gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        gsc = GoogleSignIn.getClient(this, gso)
+        signIn()
+    }
+
+    private fun signIn() {
+        googleSignInActivityResult.launch(gsc.signInIntent)
+    }
+
+    private val googleSignInActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { googleSignInAccount ->
+            GoogleSignIn.getSignedInAccountFromIntent(googleSignInAccount.data)
+                .addOnCompleteListener {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Login was successful: ${it.isSuccessful}",
+                        Toast.LENGTH_LONG
+                    )
+                }.addOnSuccessListener {
+                    Log.d("sign in successful", it.displayName.toString())
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }.addOnCanceledListener {
+                    Toast.makeText(this@LoginActivity, "Login was CANCELLED", Toast.LENGTH_LONG)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this@LoginActivity, "Login FAILED", Toast.LENGTH_LONG)
+                }
+        }
+
+    private fun setupLoginUI() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+            binding.login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                binding.username.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                binding.password.error = getString(loginState.passwordError)
             }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
+            binding.loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -64,18 +112,18 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
+        binding.username.afterTextChanged {
             loginViewModel.loginDataChanged(
-                username.text.toString(),
-                password.text.toString()
+                binding.username.text.toString(),
+                binding.password.text.toString()
             )
         }
 
-        password.apply {
+        binding.password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
+                    binding.username.text.toString(),
+                    binding.password.text.toString()
                 )
             }
 
@@ -83,16 +131,19 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
+                            binding.username.text.toString(),
+                            binding.password.text.toString()
                         )
                 }
                 false
             }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+            binding.login.setOnClickListener {
+                binding.loading.visibility = View.VISIBLE
+                loginViewModel.login(
+                    binding.username.text.toString(),
+                    binding.password.text.toString()
+                )
             }
         }
     }

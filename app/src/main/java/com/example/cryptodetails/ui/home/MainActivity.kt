@@ -1,11 +1,11 @@
 package com.example.cryptodetails.ui.home
 
 import android.Manifest
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -17,8 +17,10 @@ import com.example.cryptodetails.R
 import com.example.cryptodetails.app.CustomBroadcastReceiver
 import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
+import com.example.cryptodetails.ui.login.LoginActivity
 import com.example.cryptodetails.ui.myAccount.MyAccountFragment
-import com.example.cryptodetails.util.ContextHolder
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
@@ -30,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ContextHolder.app = application
-        ContextHolder.context = baseContext
 
         registerBroadcastReceivers()
         retrieveRegistrationToken()
@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupNavView()
+    }
+
+    private fun setupNavView() {
         val navView: BottomNavigationView = binding.navView
 
         val navController =
@@ -58,15 +62,14 @@ class MainActivity : AppCompatActivity() {
     private fun retrieveRegistrationToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w("TOKENN IS", "Fetching FCM registration token failed", task.exception)
+                Toast.makeText(
+                    baseContext,
+                    "Fetching FCM registration token failed",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@OnCompleteListener
             }
-
-            // Get new FCM registration token
             val token = task.result
-
-            // Log and toast
-            Log.d("TOKENN IS", token.toString())
             Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
         })
     }
@@ -108,15 +111,15 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MyAccountFragment.CAMERA_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
             }
         } else if (requestCode == MyAccountFragment.WRITE_EXTERNAL_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -124,6 +127,35 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterBroadcastReceivers()
+    }
+
+    fun signOut() {
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        val gsc = GoogleSignIn.getClient(this, gso)
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        gsc.signOut().addOnCompleteListener {
+            Toast.makeText(
+                this,
+                "Logout was successful: ${it.isSuccessful}",
+                Toast.LENGTH_LONG
+            )
+        }.addOnSuccessListener {
+            finish()
+            startActivity(Intent(this, LoginActivity::class.java))
+        }.addOnFailureListener {
+            Toast.makeText(
+                this,
+                "Logout FAILED",
+                Toast.LENGTH_LONG
+            )
+        }.addOnCanceledListener {
+            Toast.makeText(
+                this,
+                "Logout CANCELLED",
+                Toast.LENGTH_LONG
+            )
+        }
     }
 }
 
