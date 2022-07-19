@@ -27,7 +27,6 @@ class CryptoApp : Application() {
                 )
             highImportanceChannel1.description = "This notification is of HIGH importance"
 
-
             val lowImportanceNotificationChannel2 =
                 NotificationChannel(
                     CHANNEL_2,
