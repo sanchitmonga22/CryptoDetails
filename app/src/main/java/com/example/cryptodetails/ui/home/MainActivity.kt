@@ -1,4 +1,4 @@
-package com.example.cryptodetails
+package com.example.cryptodetails.ui.home
 
 import android.Manifest
 import android.content.IntentFilter
@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.cryptodetails.R
 import com.example.cryptodetails.app.CustomBroadcastReceiver
 import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding

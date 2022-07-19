@@ -17,6 +17,9 @@
         <entry key="app/src/main/res/drawable/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
         <entry key="app/src/main/res/drawable/ic_profile_my_account_black_24dp.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_profile_white_24dp.xml" value="0.186" />
+        <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1827309236947791" />
+        <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.1601775956284153" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14705882352941177" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1919191919191919" />
