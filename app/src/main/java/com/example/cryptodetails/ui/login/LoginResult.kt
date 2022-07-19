@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.login.ui.login
+package com.example.cryptodetails.ui.login
 
 /**
  * Authentication result : success (user details) or error message.

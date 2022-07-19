@@ -1,9 +1,9 @@
-package com.example.cryptodetails.ui.login.ui.login
+package com.example.cryptodetails.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptodetails.ui.login.data.LoginDataSource
-import com.example.cryptodetails.ui.login.data.LoginRepository
+import com.example.cryptodetails.data.LoginDataSource
+import com.example.cryptodetails.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

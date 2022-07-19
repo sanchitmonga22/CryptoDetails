@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.login.ui.login
+package com.example.cryptodetails.ui.login
 
 /**
  * User details post authentication that is exposed to the UI

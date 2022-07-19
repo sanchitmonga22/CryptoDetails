@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.login.ui.login
+package com.example.cryptodetails.ui.login
 
 /**
  * Data validation state of the login form.

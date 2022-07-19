@@ -1,12 +1,12 @@
-package com.example.cryptodetails.ui.login.ui.login
+package com.example.cryptodetails.ui.login
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cryptodetails.R
-import com.example.cryptodetails.ui.login.data.LoginRepository
-import com.example.cryptodetails.ui.login.data.Result
+import com.example.cryptodetails.data.LoginRepository
+import com.example.cryptodetails.model.Result
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

@@ -1,6 +1,7 @@
-package com.example.cryptodetails.ui.login.data
+package com.example.cryptodetails.data
 
-import com.example.cryptodetails.ui.login.data.model.LoggedInUser
+import com.example.cryptodetails.model.LoggedInUser
+import com.example.cryptodetails.model.Result
 
 /**
  * Class that requests authentication and user information from the remote data source and

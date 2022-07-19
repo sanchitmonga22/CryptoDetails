@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.login.data.model
+package com.example.cryptodetails.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

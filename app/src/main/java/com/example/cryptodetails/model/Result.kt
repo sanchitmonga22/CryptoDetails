@@ -1,4 +1,4 @@
-package com.example.cryptodetails.ui.login.data
+package com.example.cryptodetails.model
 
 /**
  * A generic class that holds a value with its loading status.
