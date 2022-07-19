@@ -1,4 +1,5 @@
 <resources>
+    <string name="main">Main</string>
     <string name="app_name">CryptoDetails</string>
     <string name="title_home">Home</string>
     <string name="title_my_account">My Account</string>
