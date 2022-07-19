@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -17,7 +18,9 @@ import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
 import com.example.cryptodetails.ui.myAccount.MyAccountFragment
 import com.example.cryptodetails.util.ContextHolder
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         ContextHolder.context = baseContext
 
         registerBroadcastReceivers()
+        retrieveRegistrationToken()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,6 +52,22 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun retrieveRegistrationToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TOKENN IS", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d("TOKENN IS", token.toString())
+            Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun registerBroadcastReceivers() {
