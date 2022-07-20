@@ -3,6 +3,7 @@ package com.example.cryptodetails.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupGoogleOAuth() {
         binding.googleSignIn?.setOnClickListener {
+            binding.loading.visibility = View.VISIBLE
             signIn()
         }
     }
@@ -76,7 +78,13 @@ class LoginActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this@LoginActivity, "Login FAILED", Toast.LENGTH_LONG).show()
                 }
+            binding.loading.visibility = View.GONE
         }
+
+    override fun onStop() {
+        binding.loading.visibility = View.GONE
+        super.onStop()
+    }
 
     private fun navigateToMainActivity() {
         finish()
