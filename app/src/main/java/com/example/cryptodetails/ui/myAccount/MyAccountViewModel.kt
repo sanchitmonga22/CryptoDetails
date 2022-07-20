@@ -17,10 +17,11 @@ import kotlinx.coroutines.launch
 
 class MyAccountViewModel : ViewModel() {
     val profileImageUri: MutableStateFlow<Uri> =
-        MutableStateFlow(Uri.parse("https://picsum.photos/200/300?random=1"))
+        MutableStateFlow(Uri.parse(RANDOM_IMAGE_URL))
 
     companion object {
         private val emptyUri = Uri.parse("")
+        const val RANDOM_IMAGE_URL = "https://picsum.photos/200/300?random=1"
     }
 
     fun updateAndSaveImage(uri: Uri, byteArray: ByteArray?) {

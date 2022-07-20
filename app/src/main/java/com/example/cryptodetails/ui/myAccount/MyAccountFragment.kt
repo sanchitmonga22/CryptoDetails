@@ -56,7 +56,7 @@ class MyAccountFragment : Fragment() {
 
         binding.email.text = "${getString(R.string.email)} ${acct?.email.toString()}"
 
-        if (acct?.photoUrl != null) {
+        if (acct?.photoUrl != null && MyAccountViewModel.RANDOM_IMAGE_URL == myAccountViewModel.profileImageUri.value.toString()) {
             myAccountViewModel.profileImageUri.value = acct.photoUrl!!
         }
 
