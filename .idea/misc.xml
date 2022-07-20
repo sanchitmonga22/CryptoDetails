@@ -5,6 +5,9 @@
       <map>
         <entry key="../../.gradle/caches/transforms-3/6b13907b11536d44eae8da6e0dc79945/transformed/appcompat-1.4.2/res/layout/select_dialog_item_material.xml" value="0.13829787234042554" />
         <entry key="../../.gradle/caches/transforms-3/df9b48493701655e3dc9295004ec28ad/transformed/material-1.6.1/res/drawable/mtrl_ic_error.xml" value="0.129" />
+        <entry key="../../.gradle/caches/transforms-3/e9ce046a997d0bc53c3b4652b48735a8/transformed/jetified-play-services-base-18.0.1/res/drawable/common_google_signin_btn_icon_dark.xml" value="0.1335" />
+        <entry key="../../.gradle/caches/transforms-3/e9ce046a997d0bc53c3b4652b48735a8/transformed/jetified-play-services-base-18.0.1/res/drawable/common_google_signin_btn_icon_dark_focused.xml" value="0.1335" />
+        <entry key="../../.gradle/caches/transforms-3/e9ce046a997d0bc53c3b4652b48735a8/transformed/jetified-play-services-base-18.0.1/res/drawable/common_google_signin_btn_icon_dark_normal.xml" value="0.1335" />
         <entry key="../../Library/Android/sdk/platforms/android-32/android.jar!/res/layout/simple_list_item_2.xml" value="0.13829787234042554" />
         <entry key="app/src/main/res/drawable-v23/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1445" />
@@ -17,6 +20,9 @@
         <entry key="app/src/main/res/drawable/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
         <entry key="app/src/main/res/drawable/ic_profile_my_account_black_24dp.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_profile_white_24dp.xml" value="0.186" />
+        <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1827309236947791" />
+        <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.1601775956284153" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14705882352941177" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1919191919191919" />

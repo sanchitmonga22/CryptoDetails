@@ -67,7 +67,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             context,
             intent?.getStringExtra(TOAST_MESSAGE_KEY).toString(),
             Toast.LENGTH_LONG
-        )
+        ).show()
     }
 
 }
