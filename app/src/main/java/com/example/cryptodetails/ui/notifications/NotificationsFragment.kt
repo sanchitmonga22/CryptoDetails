@@ -12,11 +12,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptodetails.ui.home.MainActivity
 import com.example.cryptodetails.R
 import com.example.cryptodetails.app.CryptoApp
 import com.example.cryptodetails.app.NotificationBroadcastReceiver
 import com.example.cryptodetails.databinding.FragmentNotificationsBinding
+import com.example.cryptodetails.ui.home.MainActivity
 
 class NotificationsFragment : Fragment() {
 
@@ -29,7 +29,7 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        val notificationsViewModel = ViewModelProvider(this)[NotificationsViewModel::class.java]
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         binding.viewModel = notificationsViewModel

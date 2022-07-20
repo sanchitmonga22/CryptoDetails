@@ -59,9 +59,9 @@ object Utility {
     fun writeBytesAsImage(bytes: ByteArray): File {
         val path = ContextHolder.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file = File.createTempFile("my_file", ".jpg", path)
-        val os = FileOutputStream(file);
-        os.write(bytes);
-        os.close();
+        val os = FileOutputStream(file)
+        os.write(bytes)
+        os.close()
         return file
     }
 }

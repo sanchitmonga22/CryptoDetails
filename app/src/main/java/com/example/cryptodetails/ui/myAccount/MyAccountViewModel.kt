@@ -19,8 +19,6 @@ class MyAccountViewModel : ViewModel() {
     val profileImageUri: MutableStateFlow<Uri> =
         MutableStateFlow(Uri.parse("https://picsum.photos/200/300?random=1"))
 
-    val imageText: MutableStateFlow<String> = MutableStateFlow("RANDOM_NAME")
-
     companion object {
         private val emptyUri = Uri.parse("")
     }
@@ -32,10 +30,8 @@ class MyAccountViewModel : ViewModel() {
                     if (wasUploadedSuccessfully) {
                         // FIXME: updates are not applied immeditely.
                         this@MyAccountViewModel.profileImageUri.value = uri
-                        this@MyAccountViewModel.imageText.value = uri.toString()
                     } else {
                         this@MyAccountViewModel.profileImageUri.value = emptyUri
-                        this@MyAccountViewModel.imageText.value = "ERROR"
                     }
                     notifyUserAboutUpload(byteArray, wasUploadedSuccessfully)
                 }

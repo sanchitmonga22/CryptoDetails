@@ -1,13 +1,11 @@
 package com.example.cryptodetails.network.notifications
 
+import android.annotation.SuppressLint
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class PushNotificationsService : FirebaseMessagingService() {
-    override fun onNewToken(token: String) {
-        super.onNewToken(token)
-
-    }
 
     override fun onMessageReceived(message: RemoteMessage) {
         // message.data can use custom fields to show in the notification and send using firebase.
