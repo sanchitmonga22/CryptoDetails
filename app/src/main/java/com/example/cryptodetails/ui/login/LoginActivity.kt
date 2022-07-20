@@ -3,6 +3,7 @@ package com.example.cryptodetails.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -11,15 +12,12 @@ import com.example.cryptodetails.databinding.ActivityLoginBinding
 import com.example.cryptodetails.ui.home.MainActivity
 import com.example.cryptodetails.util.ContextHolder
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var gso: GoogleSignInOptions
-    private lateinit var gsc: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,22 +42,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupGoogleOAuth() {
-        gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-        gsc = GoogleSignIn.getClient(this, gso)
         binding.googleSignIn?.setOnClickListener {
+            binding.loading.visibility = View.VISIBLE
             signIn()
         }
     }
 
     private fun signIn() {
-        googleSignInActivityResult.launch(gsc.signInIntent)
+        googleSignInActivityResult.launch(
+            GoogleSignIn.getClient(
+                this,
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                    .build()
+            ).signInIntent
+        )
     }
 
     private val googleSignInActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { googleSignInAccount ->
             GoogleSignIn.getSignedInAccountFromIntent(googleSignInAccount.data)
                 .addOnCompleteListener {
+                    it.exception?.printStackTrace()
                     Toast.makeText(
                         this@LoginActivity,
                         "Login was successful: ${it.isSuccessful}",
@@ -75,7 +78,13 @@ class LoginActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this@LoginActivity, "Login FAILED", Toast.LENGTH_LONG).show()
                 }
+            binding.loading.visibility = View.GONE
         }
+
+    override fun onStop() {
+        binding.loading.visibility = View.GONE
+        super.onStop()
+    }
 
     private fun navigateToMainActivity() {
         finish()

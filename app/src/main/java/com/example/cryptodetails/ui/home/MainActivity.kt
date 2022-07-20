@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun unregisterBroadcastReceivers() {
-        unregisterReceiver(NetworkStatusChangeReceiver())
+//        unregisterReceiver(NetworkStatusChangeReceiver())
         unregisterReceiver(customBroadcastReceiver)
     }
 
@@ -125,16 +125,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         unregisterBroadcastReceivers()
+        super.onDestroy()
     }
 
     fun signOut() {
-        val gso =
+        GoogleSignIn.getClient(
+            this,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-        val gsc = GoogleSignIn.getClient(this, gso)
-        val acct = GoogleSignIn.getLastSignedInAccount(this)
-        gsc.signOut().addOnCompleteListener {
+        ).signOut().addOnCompleteListener {
             Toast.makeText(
                 this,
                 "Logout was successful: ${it.isSuccessful}",
@@ -158,14 +157,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-//        // Add your own reselected listener
-//        binding.navView.setOnItemReselectedListener { item ->
-//            // Pop everything up to the reselected item
-//            val reselectedDestinationId = item.itemId
-//            navController.popBackStack(reselectedDestinationId, inclusive = false)
-//        }
-
-// not running-> status bar
-// home page app running -> dialog or something
-// home page app running and notifications dragged down -> update to notifications.

@@ -17,10 +17,28 @@
         android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/imageFileName"
+            android:id="@+id/displayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.imageText}" />
+            android:text="@string/display_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/uid" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_out" />
 
         <ImageView
             android:id="@+id/profile_image"
@@ -28,11 +46,5 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/profile_picture"
             app:imageUriString="@{viewModel.profileImageUri}" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sign_out"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_out" />
     </LinearLayout>
 </layout>

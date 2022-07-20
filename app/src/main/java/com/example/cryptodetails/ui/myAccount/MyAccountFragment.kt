@@ -20,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
+import com.example.cryptodetails.ui.home.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import java.io.File
 import java.io.IOException
 
@@ -40,10 +42,33 @@ class MyAccountFragment : Fragment() {
 
         val root: View = binding.root
 
+        setupAccountInfo()
+        setSignOut()
+        return root
+    }
+
+    private fun setupAccountInfo() {
+        val acct = GoogleSignIn.getLastSignedInAccount(requireContext())
+        binding.uid.text = "${getString(R.string.uid)} ${acct?.id.toString()}"
+
+        binding.displayName.text =
+            "${getString(R.string.display_name)} ${acct?.displayName.toString()}"
+
+        binding.email.text = "${getString(R.string.email)} ${acct?.email.toString()}"
+
+        if (acct?.photoUrl != null) {
+            myAccountViewModel.profileImageUri.value = acct.photoUrl!!
+        }
+
         binding.profileImage.setOnClickListener {
             showImagePickingOptionsDialog()
         }
-        return root
+    }
+
+    private fun setSignOut() {
+        binding.signOut.setOnClickListener {
+            (activity as MainActivity).signOut()
+        }
     }
 
     private fun showImagePickingOptionsDialog() {
