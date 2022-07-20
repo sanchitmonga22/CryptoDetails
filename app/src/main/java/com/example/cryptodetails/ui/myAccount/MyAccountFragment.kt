@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptodetails.R
 import com.example.cryptodetails.databinding.FragmentMyAccountBinding
+import com.example.cryptodetails.ui.home.MainActivity
 import java.io.File
 import java.io.IOException
 
@@ -43,7 +44,15 @@ class MyAccountFragment : Fragment() {
         binding.profileImage.setOnClickListener {
             showImagePickingOptionsDialog()
         }
+
+        setSignOut()
         return root
+    }
+
+    private fun setSignOut() {
+        binding.signOut.setOnClickListener {
+            (activity as MainActivity).signOut()
+        }
     }
 
     private fun showImagePickingOptionsDialog() {
