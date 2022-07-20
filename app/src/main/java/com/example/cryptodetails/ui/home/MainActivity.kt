@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 "Logout was successful: ${it.isSuccessful}",
                 Toast.LENGTH_LONG
-            )
+            ).show()
         }.addOnSuccessListener {
             finish()
             startActivity(Intent(this, LoginActivity::class.java))
@@ -148,13 +148,13 @@ class MainActivity : AppCompatActivity() {
                 this,
                 "Logout FAILED",
                 Toast.LENGTH_LONG
-            )
+            ).show()
         }.addOnCanceledListener {
             Toast.makeText(
                 this,
                 "Logout CANCELLED",
                 Toast.LENGTH_LONG
-            )
+            ).show()
         }
     }
 }
