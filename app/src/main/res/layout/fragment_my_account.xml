@@ -16,17 +16,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/displayName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/display_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/uid" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_out" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/imageFileName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.imageText}" />
 
         <ImageView
             android:id="@+id/profile_image"

@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signOut() {
-        val acct = GoogleSignIn.getLastSignedInAccount(this)
         GoogleSignIn.getClient(
             this,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
