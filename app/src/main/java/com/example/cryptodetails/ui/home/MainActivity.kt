@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.BuildConfig
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         retrieveRegistrationToken()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.flavorCategory.text= "${getString(R.string.flavor_category)} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_CATEGORY} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_SDK}"
         setContentView(binding.root)
 
         setupNavView()

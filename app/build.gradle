@@ -17,6 +17,29 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "category", "minSdk"
+    productFlavors {
+        type1 {
+            dimension "category"
+            buildConfigField("String", "FIELD_NAME_CATEGORY", "\"FIELD_VALUE_CATEGORY_TYPE1\"")
+        }
+        type2 {
+            dimension "category"
+//            applicationIdSuffix ".cat2"
+            buildConfigField("String", "FIELD_NAME_CATEGORY", "\"FIELD_VALUE_CATEGORY_TYPE2\"")
+        }
+        minSdk30 {
+            dimension "minSdk"
+            minSdk 30
+            buildConfigField("String", "FIELD_NAME_SDK", "\"FIELD_VALUE_MIN_SDK_30\"")
+        }
+        minSdk21 {
+            dimension "minSdk"
+            minSdk 21
+            buildConfigField("String", "FIELD_NAME_SDK", "\"FIELD_VALUE_MIN_SDK_21\"")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -66,4 +89,11 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.3.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation platform('com.google.firebase:firebase-bom:30.3.0')
+
+//    type1MinSdk21Implementation() if we need a dependency specific to the flavors.
+
 }
+
+/**
+ * SOURCE SETS: CREATE A NEW DIRECTORY BY GOING TO APP, FOR EXAMPLE: TYPE DEBUG AND CHOOSE SRC/DEBUG/JAVA
+ */
