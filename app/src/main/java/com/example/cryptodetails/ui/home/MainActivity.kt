@@ -18,12 +18,12 @@ import com.example.cryptodetails.app.CustomBroadcastReceiver
 import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
 import com.example.cryptodetails.ui.login.LoginActivity
+import com.example.cryptodetails.ui.map.MapsFragment
 import com.example.cryptodetails.ui.myAccount.MyAccountFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.BuildConfig
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         retrieveRegistrationToken()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.flavorCategory.text= "${getString(R.string.flavor_category)} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_CATEGORY} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_SDK}"
+        binding.flavorCategory.text =
+            "${getString(R.string.flavor_category)} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_CATEGORY} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_SDK}"
         setContentView(binding.root)
 
         setupNavView()
@@ -54,7 +55,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_my_account,
-                R.id.navigation_notifications
+                R.id.navigation_notifications,
+                R.id.map
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -123,6 +125,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show()
             }
+        } else if (requestCode == MapsFragment.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Location Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -159,3 +167,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+// polylines within 2 locations.
