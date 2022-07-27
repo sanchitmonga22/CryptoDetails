@@ -168,7 +168,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// google maps API
 // set different map modes
 // show current location with custom marker
 // change pin image and show address
