@@ -22,4 +22,10 @@
         android:name="com.example.cryptodetails.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.example.cryptodetails.ui.map.MapsFragment"
+        android:label="@string/map" />
+
 </navigation>

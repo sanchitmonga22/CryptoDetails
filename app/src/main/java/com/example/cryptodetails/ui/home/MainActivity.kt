@@ -23,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.BuildConfig
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
@@ -38,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         retrieveRegistrationToken()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.flavorCategory.text= "${getString(R.string.flavor_category)} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_CATEGORY} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_SDK}"
+        binding.flavorCategory.text =
+            "${getString(R.string.flavor_category)} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_CATEGORY} ${com.example.cryptodetails.BuildConfig.FIELD_NAME_SDK}"
         setContentView(binding.root)
 
         setupNavView()
@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_my_account,
-                R.id.navigation_notifications
+                R.id.navigation_notifications,
+                R.id.map
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -159,3 +160,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+// google maps API
+// set different map modes
+// show current location with custom marker
+// change pin image and show address
+// polylines within 2 locations.

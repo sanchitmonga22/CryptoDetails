@@ -32,4 +32,5 @@
     <string name="email">Email:</string>
     <string name="uid">UID:</string>
     <string name="flavor_category">FLAVOR_CATEGORY:</string>
+    <string name="map">Map</string>
 </resources>
