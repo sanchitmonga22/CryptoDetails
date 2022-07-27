@@ -40,15 +40,13 @@ class MapsFragment : SupportMapFragment() {
                     loadImage(acct?.photoUrl!!) { icon ->
                         googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
                         googleMap.addMarker(
-                            MarkerOptions().position(currentLocation)
-                                .title(getString(R.string.current_location))
+                            MarkerOptions()
+                                .position(currentLocation)
+                                .title("${getString(R.string.current_location)} of ${acct.displayName}")
                                 .icon(icon)
                         )
                         googleMap.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                currentLocation,
-                                MAPS_STREET_VIEW
-                            )
+                            CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_STREET_VIEW)
                         )
                     }
                 } else {
@@ -62,9 +60,6 @@ class MapsFragment : SupportMapFragment() {
             ).show()
             ex.printStackTrace()
         }
-
-        //        newLatLngZoom()
-        // 1 earth, 5 continent/country, 10 city, 15 street, 20 building
     }
 
     private fun loadImage(imageUri: Uri, callback: (resource: BitmapDescriptor) -> Unit) {
