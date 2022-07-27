@@ -168,7 +168,4 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// set different map modes
-// show current location with custom marker
-// change pin image and show address
 // polylines within 2 locations.

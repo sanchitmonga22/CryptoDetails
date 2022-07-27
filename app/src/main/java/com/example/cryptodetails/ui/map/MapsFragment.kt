@@ -1,9 +1,12 @@
 package com.example.cryptodetails.ui.map
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
 
 class MapsFragment : SupportMapFragment() {
@@ -42,9 +46,23 @@ class MapsFragment : SupportMapFragment() {
                         googleMap.addMarker(
                             MarkerOptions()
                                 .position(currentLocation)
-                                .title("${getString(R.string.current_location)} of ${acct.displayName}")
+                                .title(
+                                    "${getString(R.string.current_location)} of ${acct.displayName}"
+                                )
                                 .icon(icon)
                         )
+                        googleMap.setOnMarkerClickListener {
+                            AlertDialog.Builder(requireContext())
+                                .setMessage("address is ${getAddress(currentLocation)}")
+                                .setTitle("Address")
+                                .setCancelable(true)
+                                .setPositiveButton(
+                                    "Ok"
+                                ) { dialog, _ -> dialog?.dismiss() }
+                                .show()
+
+                            return@setOnMarkerClickListener true
+                        }
                         googleMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_STREET_VIEW)
                         )
@@ -60,6 +78,23 @@ class MapsFragment : SupportMapFragment() {
             ).show()
             ex.printStackTrace()
         }
+    }
+
+    private fun getAddress(currentLocation: LatLng): String {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+
+        val addresses: List<Address> = geocoder.getFromLocation(
+            currentLocation.latitude,
+            currentLocation.longitude,
+            1
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+//        val city: String = addresses[0].getLocality()
+//        val state: String = addresses[0].getAdminArea()
+//        val country: String = addresses[0].getCountryName()
+//        val postalCode: String = addresses[0].getPostalCode()
+//        val knownName: String = addresses[0].getFeatureName() // Only if available else return NULL
+        return addresses[0].getAddressLine(0)
     }
 
     private fun loadImage(imageUri: Uri, callback: (resource: BitmapDescriptor) -> Unit) {
