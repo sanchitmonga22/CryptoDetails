@@ -33,4 +33,5 @@
     <string name="uid">UID:</string>
     <string name="flavor_category">FLAVOR_CATEGORY:</string>
     <string name="map">Map</string>
+    <string name="current_location">Current Location</string>
 </resources>

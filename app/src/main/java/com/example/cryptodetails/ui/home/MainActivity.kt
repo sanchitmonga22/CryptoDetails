@@ -18,6 +18,7 @@ import com.example.cryptodetails.app.CustomBroadcastReceiver
 import com.example.cryptodetails.app.NetworkStatusChangeReceiver
 import com.example.cryptodetails.databinding.ActivityMainBinding
 import com.example.cryptodetails.ui.login.LoginActivity
+import com.example.cryptodetails.ui.map.MapsFragment
 import com.example.cryptodetails.ui.myAccount.MyAccountFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -123,6 +124,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        } else if (requestCode == MapsFragment.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Location Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
