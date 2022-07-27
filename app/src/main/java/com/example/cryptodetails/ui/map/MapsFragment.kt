@@ -54,8 +54,10 @@ class MapsFragment : SupportMapFragment() {
     private fun setupMarker(googleMap: GoogleMap, location: Location) {
         val currentLocation = LatLng(location.latitude, location.longitude)
         val acct = GoogleSignIn.getLastSignedInAccount(requireContext())
-        loadImage(acct?.photoUrl!!) { icon ->
+        loadProfileImage(acct?.photoUrl!!) { icon ->
+            // options are: MAP_TYPE_NORMAL, MAP_TYPE_SATELLITE, MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID
             googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+
             currentMarker = googleMap.addMarker(
                 MarkerOptions()
                     .position(currentLocation)
@@ -63,13 +65,7 @@ class MapsFragment : SupportMapFragment() {
                     .icon(icon)
             )
             googleMap.setOnMarkerClickListener {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Address")
-                    .setMessage("address is ${getAddress(currentLocation)}")
-                    .setCancelable(true)
-                    .setPositiveButton("Ok") { dialog, _ -> dialog?.dismiss() }
-                    .show()
-
+                showAddressDialog(currentLocation)
                 return@setOnMarkerClickListener true
             }
             googleMap.moveCamera(
@@ -78,24 +74,26 @@ class MapsFragment : SupportMapFragment() {
         }
     }
 
+    private fun showAddressDialog(currentLocation: LatLng) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Address")
+            .setMessage("address is ${getAddress(currentLocation)}")
+            .setCancelable(true)
+            .setPositiveButton("Ok") { dialog, _ -> dialog?.dismiss() }
+            .show()
+    }
+
     private fun getAddress(currentLocation: LatLng): String {
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-
-        val addresses: List<Address> = geocoder.getFromLocation(
-            currentLocation.latitude,
-            currentLocation.longitude,
-            1
-        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-//        val city: String = addresses[0].getLocality()
-//        val state: String = addresses[0].getAdminArea()
-//        val country: String = addresses[0].getCountryName()
-//        val postalCode: String = addresses[0].getPostalCode()
-//        val knownName: String = addresses[0].getFeatureName() // Only if available else return NULL
+        val addresses: List<Address> = Geocoder(requireContext(), Locale.getDefault())
+            .getFromLocation(
+                currentLocation.latitude,
+                currentLocation.longitude,
+                1
+            ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
         return addresses[0].getAddressLine(0)
     }
 
-    private fun loadImage(imageUri: Uri, callback: (resource: BitmapDescriptor) -> Unit) {
+    private fun loadProfileImage(imageUri: Uri, callback: (resource: BitmapDescriptor) -> Unit) {
         Glide.with(this).asBitmap()
             .load(imageUri)
             .into(object : CustomTarget<Bitmap?>() {
