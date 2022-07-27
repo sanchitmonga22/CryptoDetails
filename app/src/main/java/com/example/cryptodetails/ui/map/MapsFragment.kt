@@ -2,11 +2,14 @@ package com.example.cryptodetails.ui.map
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,17 +22,12 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.cryptodetails.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import java.util.*
-
 
 class MapsFragment : SupportMapFragment() {
 
@@ -37,46 +35,46 @@ class MapsFragment : SupportMapFragment() {
         googleMap.isMyLocationEnabled = true
         googleMap.uiSettings.isMyLocationButtonEnabled = true
         try {
-            LocationServices.getFusedLocationProviderClient(requireActivity()).lastLocation.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val currentLocation = LatLng(it.result.latitude, it.result.longitude)
-                    val acct = GoogleSignIn.getLastSignedInAccount(requireContext())
-                    loadImage(acct?.photoUrl!!) { icon ->
-                        googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
-                        googleMap.addMarker(
-                            MarkerOptions()
-                                .position(currentLocation)
-                                .title(
-                                    "${getString(R.string.current_location)} of ${acct.displayName}"
-                                )
-                                .icon(icon)
-                        )
-                        googleMap.setOnMarkerClickListener {
-                            AlertDialog.Builder(requireContext())
-                                .setMessage("address is ${getAddress(currentLocation)}")
-                                .setTitle("Address")
-                                .setCancelable(true)
-                                .setPositiveButton(
-                                    "Ok"
-                                ) { dialog, _ -> dialog?.dismiss() }
-                                .show()
-
-                            return@setOnMarkerClickListener true
-                        }
-                        googleMap.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_STREET_VIEW)
-                        )
-                    }
-                } else {
-                    Toast.makeText(context, "Location could not be requested", Toast.LENGTH_LONG)
-                        .show()
-                }
+            (requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager).requestLocationUpdates(
+                LocationManager.FUSED_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE
+            ) {
+                currentMarker?.remove()
+                setupMarker(googleMap, it)
             }
         } catch (ex: Exception) {
             Toast.makeText(
                 context, "An exception occurred when fetching current location", Toast.LENGTH_LONG
             ).show()
             ex.printStackTrace()
+        }
+    }
+    private var currentMarker: Marker? = null
+
+    private fun setupMarker(googleMap: GoogleMap, location: Location) {
+        val currentLocation = LatLng(location.latitude, location.longitude)
+        val acct = GoogleSignIn.getLastSignedInAccount(requireContext())
+        loadImage(acct?.photoUrl!!) { icon ->
+            googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            currentMarker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(currentLocation)
+                    .title("${getString(R.string.current_location)} of ${acct.displayName}")
+                    .icon(icon)
+            )
+            googleMap.setOnMarkerClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Address")
+                    .setMessage("address is ${getAddress(currentLocation)}")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok") { dialog, _ -> dialog?.dismiss() }
+                    .show()
+
+                return@setOnMarkerClickListener true
+            }
+            googleMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_STREET_VIEW)
+            )
         }
     }
 
@@ -133,6 +131,8 @@ class MapsFragment : SupportMapFragment() {
         private const val MAPS_LANDMASS_VIEW = 5f
         private const val MAPS_CITY_VIEW = 10f
         private const val MAPS_STREET_VIEW = 15f
+        const val LOCATION_REFRESH_TIME = 15000L // 15 seconds to update
+        const val LOCATION_REFRESH_DISTANCE = 500f // 500 meters to update
         private const val MAPS_BUILDING_VIEW = 20f
     }
 
