@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
@@ -27,19 +28,21 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.GeoApiContext
 import java.util.*
 
 class MapsFragment : SupportMapFragment() {
 
     private val onMapReadyCallback = OnMapReadyCallback { googleMap ->
-        googleMap.isMyLocationEnabled = true
-        googleMap.uiSettings.isMyLocationButtonEnabled = true
         try {
+            googleMap.isMyLocationEnabled = true
+            googleMap.uiSettings.isMyLocationButtonEnabled = true
             (requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager).requestLocationUpdates(
                 LocationManager.FUSED_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE
             ) {
-                currentMarker?.remove()
+                currentMarker?.remove() // removing the previous marker, so that we can set a new marker.
+                addPolyLines(googleMap, it)
                 setupMarker(googleMap, it)
             }
         } catch (ex: Exception) {
@@ -49,7 +52,21 @@ class MapsFragment : SupportMapFragment() {
             ex.printStackTrace()
         }
     }
+
+    private fun addPolyLines(googleMap: GoogleMap, currentLocation: Location) {
+        googleMap.addPolyline(
+            PolylineOptions()
+                .add(LatLng(currentLocation.latitude, currentLocation.longitude))
+                .add(LatLng(currentLocation.latitude + 0.15, currentLocation.longitude - 0.1))
+                .add(LatLng(currentLocation.latitude + 0.1, currentLocation.longitude + 0.05))
+                .add(LatLng(currentLocation.latitude, currentLocation.longitude))
+                .color(Color.RED)
+                .width(10f)
+        )
+    }
+
     private var currentMarker: Marker? = null
+    private lateinit var geoAPIContext: GeoApiContext
 
     private fun setupMarker(googleMap: GoogleMap, location: Location) {
         val currentLocation = LatLng(location.latitude, location.longitude)
@@ -69,7 +86,7 @@ class MapsFragment : SupportMapFragment() {
                 return@setOnMarkerClickListener true
             }
             googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_STREET_VIEW)
+                CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_CITY_VIEW)
             )
         }
     }
@@ -115,6 +132,8 @@ class MapsFragment : SupportMapFragment() {
     ): View {
         val root = super.onCreateView(inflater, container, savedInstanceState)
         requestLocationPermission()
+        geoAPIContext =
+            GeoApiContext.Builder().apiKey(getString(R.string.google_maps_api_key)).build()
         return root
     }
 
@@ -129,9 +148,10 @@ class MapsFragment : SupportMapFragment() {
         private const val MAPS_LANDMASS_VIEW = 5f
         private const val MAPS_CITY_VIEW = 10f
         private const val MAPS_STREET_VIEW = 15f
+        private const val MAPS_BUILDING_VIEW = 20f
+
         const val LOCATION_REFRESH_TIME = 15000L // 15 seconds to update
         const val LOCATION_REFRESH_DISTANCE = 500f // 500 meters to update
-        private const val MAPS_BUILDING_VIEW = 20f
     }
 
     private fun checkLocationPermission() = ContextCompat.checkSelfPermission(
