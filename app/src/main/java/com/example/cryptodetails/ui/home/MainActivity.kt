@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home,
                 R.id.navigation_my_account,
                 R.id.navigation_notifications,
-                R.id.map
+                R.id.map,
+                R.id.media_player
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -167,5 +168,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-// polylines within 2 locations.
