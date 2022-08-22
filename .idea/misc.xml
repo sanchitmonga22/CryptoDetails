@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_layered_profile_white_grey_background_24dp.xml" value="0.163" />
         <entry key="app/src/main/res/drawable/ic_map.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/ic_map_pin.xml" value="0.1285" />
+        <entry key="app/src/main/res/drawable/ic_media_player.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/ic_profile_my_account_black_24dp.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_profile_white_24dp.xml" value="0.186" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1919191919191919" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.19972826086956522" />
+        <entry key="app/src/main/res/layout/fragment_media_player.xml" value="0.19972826086956522" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.19805603027343752" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/list_items_search_bar.xml" value="0.13779128672745694" />

@@ -21,4 +21,8 @@
         android:icon="@drawable/ic_map_pin"
         android:title="@string/map" />
 
+    <item
+        android:id="@+id/media_player"
+        android:icon="@drawable/ic_media_player"
+        android:title="@string/media" />
 </menu>

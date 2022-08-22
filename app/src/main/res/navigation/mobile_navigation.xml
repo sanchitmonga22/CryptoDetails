@@ -28,4 +28,9 @@
         android:name="com.example.cryptodetails.ui.map.MapsFragment"
         android:label="@string/map" />
 
+    <fragment
+        android:id="@+id/media_player"
+        android:name="com.example.cryptodetails.ui.media.MediaPlayerFragment"
+        android:label="@string/media_player" />
+
 </navigation>
